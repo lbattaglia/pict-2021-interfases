@@ -1,0 +1,716 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc} %% pues [utf8x] da problemas
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{alltt}
+\usepackage[]{fancyhdr}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{makeidx,epsf}
+\usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=blue,urlcolor=red,colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{nameref,url}
+\usepackage{subfigure}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{setspace}
+% ...........................................................
+\usepackage{paralist}   % para {compactitem}
+\usepackage{enumitem}   % para {itemize}[noitemsep]
+\usepackage{sistyle}    % an intermediate SI units package 
+%usepackage{siunitx}    % better SI units that collects several ones
+% .........................................................
+% .........................................................
+%\usepackage{bibunits}
+\usepackage[babel]{csquotes}
+\usepackage{soulutf8}
+% ..............................................................
+%\usepackage[hyperref,backend=biber,natbib=true]{biblatex}
+%% \addbibresource{sloshing3d.bib}
+%% \addbibresource{navales.bib}
+% --------------------------------------------------------------
+\newcommand{\avv}{\langle\mathbf{v}\rangle}
+\newcommand{\avp}{\langle{p}\rangle}
+\newcommand{\rearrow}[2]{\ensuremath{~~\substack{\xrightarrow[]{~#1~}\\\xleftarrow[~#2~]{}~~}}}
+\scrollmode \makeindex \sloppy
+\decimalpoint  % numeros decimales con punto
+% ----------------------------------------------------------------
+% macros usuario
+% ----------------------------------------------------------------
+% longitudes y centrado de la caja, espaciado:
+  \textheight = 25.70 truecm
+  \textwidth  = 17.50 truecm
+  \advance\voffset by  -2.0 truecm     % \voffset = -1 truein
+  \advance\hoffset by  -2.0 truecm     % \hoffset = -1 truein
+  \renewcommand\baselinestretch {1.2}  % interline
+% ----------------------------------------------------------------
+% definiciones del usuario
+\newcommand{\ltitle}[1]{{\normalsize {\bf #1 }}}
+\newcommand{\stitle}[1]{\begin{center} \normalsize \bf #1 \end{center}}
+\catcode`\!=\active
+\let!\boldmath
+\def\!{\ifmmode\mskip-\thinmuskip\else\char'74\fi}
+%
+%% \let\oldbibliography\thebibliography
+%% \renewcommand{\thebibliography}[1]{%
+%%   \oldbibliography{#1}%
+%%   \setlength{\itemsep}{1pt}%
+}
+% ----------------------------------------------------------------
+\title{ DESCRIPCIÓN TÉCNICA - PICT 2021 \\ %% HASTA 20 PÁGINAS, 2MB
+ {%\Large 
+ Título:  \bf Dinámica de fluidos computacional para flujo con interfases móviles en plataformas de HPC}}
+%%Desarrollo de métodos numéricos de alto desempeño para multifísica computacional:
+%%     interfases, medios permeables  e interacción fluido-estructura.}}
+%% PID UTN 2020 Métodos numéricos eficientes y escalables para el estudio de flujos y sus efectos en obras civiles
+%% PIP 2021 Dinámica de fluidos computacional para flujo y transporte multifásico en plataformas de supercómputo
+%% PICT 2018 Dinámica de fluidos computacional con aplicaciones en interfases móviles a diferentes escalas
+%% PID UTN 2019 Prototipos numéricos de alto desempeño computacional para flujo y transporte multifásico enaplicaciones ingenieriles
+\author{L. Battaglia, J. D'El\'{\i}a, L. Garelli, P.A. Kler, G.A. R\'{\i}os Rodr\'{\i}guez y M.A. Storti.}
+\date{}
+% --------1--------------------------------------------------------
+\begin{document}
+%\pagenumbering{0}
+\vspace{-1cm}
+\maketitle
+
+\section*{Palabras clave y temas}
+
+\begin{itemize}
+\item Interfases móviles: generación de microgotas, flujo multifase en medios permeables. 
+\item Superficie libre: agitación, tanques de olas numéricos. 
+\item Interacción fluido-estructura: energía undimotriz, fuerzas sobre cuerpos sumergidos.  
+\end{itemize}
+
+\section*{Otros integrantes}
+
+Posibles: EJ López, S Sarraf, HG Castro (ver en cuál)
+
+\textcolor{red}{revisar: Marcela Cruchaga }
+
+\textcolor{red}{revisar: Gente relacionada con fonarsec/UTN-FRBB. }
+
+Becarios: Gerlero, Arriondo, Harispe, Salazar, Caram, Franck, Trivisonno? 
+
+Evaluar otros integrantes según las temáticas, hay tantos caciques como indios!  
+
+\section*{Resumen}
+
+prueba github
+
+\textcolor{red}{De la ficha CEYSTE}
+
+Este proyecto se propone desarrollar técnicas de simulación numérica
+computacional en dinámica de fluidos para el adecuado estudio y
+desarrollo de aplicaciones tecnológicas que involucran interfases
+entre fluidos inmiscibles, pudiendo considerarse interfases
+líquido-gas, líquido-líquido, o líquido-sólido abarcando diferentes
+escalas de longitud.  Se considerará el estudio de las interfases
+mencionadas tanto en entornos abiertos como en el caso de depósitos o
+canales de líquidos con superficie libre y cuerpos inmersos, en
+entornos confinados como tubos o canales de diferentes dimensiones
+geométricas, y en medios porosos artificiales o naturales, como en el
+caso del papel, suelo u hormigones drenantes.  Para el desarrollo de
+los algoritmos de simulación numérica propuestos, se utilizarán
+herramientas de código abierto basadas principalmente en el método de
+volúmenes finitos, las cuales se desarrollarán de acuerdo a las
+necesidades particulares de cada una de las aplicaciones. Todos los
+programas desarrollados se ejecutarán en plataformas de cálculo
+paralelo con alto desempeño computacional, principalmente en aquellas
+disponibles en el lugar de trabajo de los investigadores del proyecto.
+
+\section{OBJETIVOS GENERALES} 
+
+%\begin{bibunit}[unsrt]
+
+\iftrue {\it (máx 1 pág.)  Objetivos Generales e impacto: Identificar
+  el problema general en estudio, contextualizar el problema a nivel
+  local, identificar que parte del problema se intenta abordar
+  /contribuir con la investigación.}  \fi
+
+El objetivo general de la propuesta es el desarrollo de métodos
+numéricos la resolución de problemas de interés tecnológico en el área
+de la dinámica de fluidos computacional que abarca fenómenos de la
+Multifísica tales como interfases móviles e interacción
+fluido-estructura. Estos fenómenos requieren formulaciones
+consistentes en la producción de estrategias numérico-computacionales
+aptas para la verificación y diseño de sistemas y prototipos en
+diferentes escalas de interés, desde la microfluídica a los flujos en
+estructuras industriales o infraestructura urbana.
+
+Se promueve además que los métodos numéricos sean eficientes y
+escalables en un paradigma de computación de alto desempeño, e
+integrados a códigos de fuente abierta basados en métodos tales como
+el de volúmenes finitos, de elementos finitos y de elementos de borde,
+dando continuidad y proyección a futuro a los desarrollos del grupo de
+trabajo.
+
+\textcolor{red}{Falta enfatizar lo novedoso, nuevos fenómenos a
+  incorporar, mayor precisión o detalle, para diferenciarlo del
+  PICT2018.  }
+
+
+\section{OBJETIVOS ESPECÍFICOS E HIPÓTESIS DE TRABAJO} 
+\iftrue
+{\it (máx 1 pág)
+Identificar los Objetivos específicos relacionados con el problema que se abordará. Describir la hipótesis de trabajo y como se abordará el problema en cuestión a través de la experimentación y estudio.}
+\fi
+
+Los objetivos específicos del proyecto están dados en función de los fenómenos a resolver, brindando para cada uno el marco metodológico previsto.
+
+
+
+\textcolor{red}{Tomado de PIP 2021 derecho. Quizás haya que refrasear y meter hipótesis/abordaje. Tomo también la gente a trabajar, comentada dentro de cada subsection }
+
+\subsection{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado}\label{ss:oe21}
+%Gabriel, Josy, Nico, Rodrigo, Pablo
+Se propone desarrollar técnicas y estrategias numéricas para la simulación de flujos capilares en medios porosos y del transporte de solutos en medios saturados y no-saturados a través de dichos flujos. Se considerarán dos enfoques: modelos de imbibición basados en la ecuación de Richards, y técnicas de simulación multiescala.
+
+\subsection{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+%David, Pablo y Jorge
+Se propone desarrollar prototipos numéricos de generadores de microgotas y microcápsulas a través del estudio y la implementación numérica de los diferentes fenómenos que involucran la ruptura de interfases líquido-líquido, como la coalescencia y división de gotas. Se proponen tres estrategias diferentes que 
+exploran diferentes complejidades computacionales: modelos semi-empíricos, modelos completos \textit{Volume of Fluid.} (VOF) y modelos híbridos VOF--dos fluidos acoplados a estrategias de inteligencia artificial.
+
+\subsection{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
+%Octavio, Camilo, Pablo
+Se propone el desarrollo de estrategias numéricas para el estudio del comportamiento de reactores catalíticos estructurados tipo monolíticos. Estas estrategias deben contemplar la naturaleza intrincada del flujo de fluidos a través de matrices de porosidad microestructurada (contemplada en el objetivo específico~\ref{ss:oe21}) y los procesos complejos que involucran varias etapas fisicoquímicas, como la difusión, la adsorción y la activación de las especies químicas involucradas, mediada por la presencia de superficies catalíticas y otras condiciones que determinan el desarrollo de las reacciones. 
+
+\subsection{Interfases líquido--gas no confinadas: superficie libre}
+%Gustavo, Laura
+Se generarán estrategias para resolver casos con superficie libre empleando el método de volúmenes finitos combinado con metodologías específicas para la representación de interfases en tres dimensiones espaciales, con el propósito de resolver el flujo en cursos de agua con generación y simulación de olas en torno a estructuras total o parcialmente inmersas, así como también la agitación en dominios cerrados. 
+
+\subsection{Interfases líquido--solido: interacción fluido estructura}
+%Gustavo, Jorge, Sofía?
+BEM para interacción fluido-MEMs?
+
+
+%Mario, Laura 
+Se desarrollarán métodos de resolución de problemas de interacción fluido-estructura, en los cuales los cuerpos inmersos, rígidos, interactúan con un flujo no estacionario, viscoso e incompresible, como ser en sedimentación de partículas o el flujo en torno a cuerpos fijos o con desplazamientos impuestos, en distintas escalas de resolución. 
+
+\section{RELEVANCIA DEL PROBLEMA} 
+\iftrue
+{\it (máx 3 pág.)
+Desarrollar la importancia e impacto a nivel local, general y para la especialidad del problema, los objetivos y el conocimiento que se generará.
+Describir antecedentes, avances y el estado del arte – búsqueda bibliográfica actualizada.}
+\fi
+\subsection{Relevancia e impacto en el medio}
+
+\textcolor{red}{Itemizo como ayuda a la redacción. Luego podemos agrupar por párrafo. }
+
+\begin{itemize}
+
+\item{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado}
+en la micro- y nanoescala,  %donde los efectos de tensión superficial son dominantes y muy complejos de medir y reproducir experimentalmente~\cite{Berli16,Schaumburg18}, pero que determinan la eficiencia y factibilidad de diferentes métodos y dispositivos. Se destaca el hecho social de que los dispositivos basados en papel han demostrado un gran potencial para el desarrollo de diversas aplicaciones analíticas en salud, control ambiental, fitosanitario y bromatológico~\cite{Posthuma09,Yager06}; 
+
+\item{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+
+\item{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
+
+\item{Interfases líquido--gas no confinadas: superficie libre}
+%% obras de ingeniería civil, mecánica o naval,
+%% %bajo la hipótesis de incompresibilidad del fluido y con  efectos de tensión superficial despreciables, donde se requiere resolver un flujo en superficie libre, por ejemplo, en el escurrimiento en torno a pilas de puentes o fustes de turbinas eólicas~\cite{Suja2018}, o en la agitación o {\it sloshing} que se produce en tanques de transporte o almacenamiento de líquidos \cite{Battaglia2018,Cruchaga2013}, de manera tal que la determinación de los patrones de flujo en estas aplicaciones aporta datos esenciales para la seguridad y el diseño tanto hidrodinámico como estructural; 
+
+\item{Interfases líquido--solido: interacción fluido estructura}
+%% en las interacciones entre cuerpos y el medio fluido en que están inmersos~\cite{hou2012} que se presentan en diferentes aplicaciones de interés,% entre las que se cuentan problemas de 
+%% %micro-cuerpos (Fig.~\ref{fg-intrincate1}) y sistemas micro-electromec\'anicos (MEMS)~\cite{rf:xiao-ye-2011} (Fig.~\ref{fg-waves40}, izq.), resistencia de olas en cascos de embarcaciones~\cite{rf:aimi-diligenti-2017,rf:jdelia_cam} (Fig.~\ref{fg-waves40}, der.), o de dispositivos total o parcialmente sumergidos denominados  \emph{Wave Energy Converters} (WEC) desarrollados para la generación de energía mareomotriz~\cite{Falnes2007}, Fig~\ref{fg-boyas}. 
+%% %
+  
+\end{itemize}
+
+\subsection{Relevancia en la especialidad}
+
+\textcolor{red}{Lo comentado está tomado del PIP2021 - Kler. Hay que resumir y seleccionar. Faltan cosas de BEM. }
+
+%% \subsection{Introducción general}
+%% %2paginas
+%% El modelado de interfases entre fluidos inmiscibles es un campo de investigación vigente y activo dentro de la disciplina de la mecánica computacional presentando desafíos en cuanto al modelado de los fenómenos, la implementación computacional y el comportamiento matemático de los modelos generados. Estos desafíos incluyen el desplazamiento de las interfases, la metodología empleada para identificar la posición de la interfase, el tratamiento numérico de la transición de las propiedades de los fluidos de un fluido al otro y, en algunos casos, la representación de comportamientos diferentes en cada fase. Las ecuaciones de Navier-Stokes~\cite{rf:donea-huerta} para el caso incompresible y viscoso proveen el marco teórico para el cual se desarrollan los métodos numéricos que son de interés a este proyecto. Se agregan además todas las estrategias necesarias para que los modelos numéricos generados puedan resolverse en plataformas de cálculo distribuido de alto rendimiento (HPC).
+
+
+%% El flujo a dos fases mediante simulación numérica ha sido abordado por métodos numéricos diversos~\cite{Cruchaga2016}, como por ejemplo diferencias finitas, volúmenes finitos, y elementos finitos, así como también métodos de partículas, en sus diversas variantes. Otro aspecto a destacar de la temática es la variedad de escalas geométricas que se incluyen en el estudio de interfases fluido-fluido~\cite{alkayyali2019microfluidic}. Estas escalas abarcan desde los cientos de metros, como en el caso del movimiento de olas, hasta algunas micras, como es el caso de las interfases capilares a nivel de poro en el papel~\cite{schaumburg2018numerical}. Otra circunstancia a tener en cuenta en el desarrollo de las técnicas numéricas son los efectos de la tensión superficial, en donde el cálculo preciso de las curvaturas juega un rol fundamental, sobre todo en interfases líquido--líquido~\cite{mora2019numerical}. Dada la variedad de temáticas y posibles enfoques, a continuación, se trata de compilar el estado del arte organizado de acuerdo a los diferentes tipos de aplicaciones contempladas en el proyecto.
+
+
+%% \subsection{Estado del arte}
+%% %2paginas
+
+
+%% \subsubsection{Interfases líquido-gas confinadas: flujo capilar no-saturado}
+
+%% El flujo de imbibición capilar es un fenómeno  estudiado de manera independiente
+%% por  microreólogos e hidrogeólogos. Desde la microreología, el estudio de estos flujos se abandonó rápidamente a mediados del siglo pasado~\cite{Richards} concluyendo con algunos estudios preliminares de flujo en papel~\cite{ruoff1960diffusion} y algunos medios regulares artificiales~\cite{White62}. En contraste, desde la hidrogeología el tema se investigó de manera continua hasta nuestros días, generando una gran cantidad de conocimiento acerca del flujo capilar, como así también una gran cantidad de modelos y técnicas numéricas para su resolución~\cite{BrooksAndCorey,VanGenuchten,lomeland2005new}.
+
+%% Con el resurgimiento de la microfluídica basada en papel~\cite{salentijn2018reinventing}, los estudios analíticos y numéricos de flujo capilar volvieron a cobrar importancia en la microescala~\cite{erickson2014smartphone}. Está claro que los dos enfoques (hidrogeológico y microfluídico) difieren mucho en su campo ingenieril, y que las técnicas numéricas están adaptadas y optimizadas para diferentes aplicaciones. Sin embargo, el largo camino transitado por la hidrogeología aporta conocimientos extremadamente valiosos para entender el comportamiento de dispositivos microfluídicos basados en papel~\cite{gasperino2016} y desarrollar prototipos numéricos de estos dispositivos que aceleren el desembarco de esta tecnología al campo de aplicación cotidiana.
+ 
+%% %Recientemente, se han publicado algunos modelos de flujo de imbibición en papel, basados en los modelos clásicos de flujo en suelo~\cite{BuserThesis,Rath}, y tanto nuestro grupo de trabajo~\cite{rationalDesign}, como varios grupos en el mundo se encuentran trabajando en nuevos modelos que resuelvan adecuadamente la fisicoquímica particular del proceso de imbibición capilar tanto en papel y como en otros medios micro, meso y nanoporosos de interés tecnológico tanto para el desarrollo de técnicas analíticas, desarrollo de nuevos materiales y diferentes tipos de catalizadores~\cite{Urteaga2019}. 
+
+%% Respecto de las herramientas numéricas para la simulación de estos flujos, se encuentran disponibles herramientas numéricas comerciales y de código abierto en 1D~\cite{hydrus}, 2D y 3D~\cite{porousMultiphaseFoam}, dirigidas a estudios hidrogeológicos donde la gravedad juega un rol fundamental, mientras que en la microescala todavía existe una vacancia instrumental. %En este sentido, nuestro grupo se encuentra trabajando activamente en cooperación con uno de los principales grupos de desarrollo de estas herramientas hidrogeológicas mencionadas~\cite{groundwaterFoam}, para producir un modelo adecuado para aplicaciones microfluídicas. 
+
+
+%% %\subsubsection{Transporte en medios no-saturados}
+
+%% Además de resolver el flujo, resulta de importancia crucial entender y simular los mecanismos de transporte para diferentes sustancias en medios porosos no-saturados\footnote{Se dice que un medio poroso está saturado cuando todo el espacio libre está ocupado por el líquido, es decir, que un medio no-saturado es aquel medio poroso que aún puede incorporar más líquido en su volumen.} a los fines de simular adecuadamente acuíferos en procesos de contaminación, cromatografía líquida, análisis de flujo lateral o separaciones electroforéticas en papel, entre muchas aplicaciones~\cite{hettel2020computational}. Sin embargo, hasta épocas recientes, todos los esfuerzos han estado direccionados a modelar y simular el transporte de sustancias en medios completamente saturados y con flujo desarrollado debido quizás al aumento notorio de la complejidad de los fenómenos cuando el flujo no se encuentra desarrollado y/o el medio no está completamente saturado~\cite{zheng2019numerical}. 
+%% El estudio del transporte de solutos en medios no saturados, es un objeto de estudio actual y en pleno desarrollo tanto desde lo modelístico, como desde el desarrollo de técnicas numéricas~\cite{Berli16}.
+
+%% Paralelamente, con el advenimiento de la recuperación asistida de petróleo, y el aumento de la minería a cielo abierto, el tema ha adquirido relevancia nuevamente y se está trabajando a nivel mundial en la temática, sobre todo a los fines de contar con prototipos numéricos confiables de dispersión  de contaminantes en suelo (en la macroescala)~\cite{gamazo2016proost} y la producción de materiales nanoestructurados (en la microescala)~\cite{mercuri2017open}.
+
+%% \subsubsection{Interfases líquido-líquido confinadas: microgotas}
+%% Las microgotas se generan mediante una red de microcanales en donde se hacen coincidir dos fluidos inmiscibles para generar una fase dispersa suspendida en una fase continua~\cite{alkayyali2019microfluidic}. 
+%% Mediante la selección adecuada de los medios y condiciones de trabajo, estas microgotas pueden ser destinadas a diferentes aplicaciones como microreactores~\cite{sui2020continuous}, microcápsulas multicapa para liberación controlada de drogas~\cite{Marengo2019generation}, microcámaras para cultivo de microorganismos~\cite{jian2020microbial}, entre muchas otras~\cite{wang2019microdroplets}.
+
+%% El mecanismo de formación de las microgotas depende de la competencia entre el esfuerzo de corte impuesto por el flujo de la fase continua y la tensión interfacial. Desde el punto de vista fluidodinámico, se pueden dar diferentes regímenes dependiendo del valor del número capilar (Ca, i.e. la relación entre las tensiones de corte y las tensiones interfaciales), las viscosidades, los caudales y las dimensiones geométricas de los microcanales~\cite{baroud2010dynamics}. El control de estos parámetros permite ventanas de operación donde se producen microgotas de tamaño controlado, regular y constante en el tiempo~\cite{vansteene2018towards}.
+
+%% En cuanto al estado del arte en la simulación de generadores de microgotas, este campo es aún incipiente~\cite{hadikhani2020numerical} y los modelos existentes están parcialmente basados en consideraciones geométricas y el número capilar desarrollados ad-hoc~\cite{iqbal2020effect}. La simulación numérica de formación de microgotas se está abordando mediante diferentes herramientas y estrategias de mecánica computacional y computación de alto desempeño~\cite{khater2020picoliter}. Se destacan, por ahora tres tipos de enfoque: por un lado las simulaciones directas (conocidas como DNS\footnote{De su sigla en inglés \textit{Direct Numerical Simulation}} en la jerga de la Mecánica Computacional, MC)~\cite{tryggvason2010multiscale}, en las cuales se busca una representación detallada de los fenómenos interfaciales a partir de la resolución completa de las ecuaciones de Navier--Stokes para un dominio con propiedades reológicas variables en el espacio. Por otro lado, para representar dominios más grandes a un costo computacional razonable, se propone el método  VOF~\cite{mora2019numerical}, asociado al método general de los volúmenes finitos (MVF)~\cite{OpenFOAM1}. En este caso, se obtienen simulaciones con una precisión razonable, a un costo menor, aunque todavía incompatible con procesos de  prototipado rápido de generadores~\cite{popinet2015quadtree}. Dependiendo el tipo de  estrategia para el cálculo de las curvaturas, algunas implementaciones de VOF presentan problemas de precisión para representar desprendimiento o coalescencia de gotas~\cite{aniszewski2014volume}.
+
+%% Finalmente, existen formulaciones mucho menos costosas y por ende mucho menos precisas, como es el caso del modelo de dos fluidos que requiere ciertas relaciones de clausura para los esfuerzos y las curvaturas de la interfase. Estas relaciones de clausura son generalmente empíricas y específicas de cada configuración, aunque existen también algunas expresiones analíticas para problemas simples~\cite{buist2019machine}.
+
+%% \subsubsection{Interfases líquido--solido confinado: flujo reactivo en medios microestructurados}
+%% Los reactores conocidos en la jerga de la ingeniería de procesos como reactores monolíticos~\cite{regenhardt2020monolithic} involucran el flujo de solventes y reactivos, así como la reacción de éstos entre si, generalmente promovida por un sólido catalítico constituido por un medio poroso o microestructurado~\cite{hettel2020computational}. 
+%% Una alternativa válida en el estudio de los fenómenos de transporte y reacción simultánea en medios porosos es desarrollar modelos en la microescala, es decir a escala de un poro o microcavidad. Para esto, se debe caracterizar el sistema reactivo considerando únicamente los fenómenos de transporte de pequeña escala (difusión, adsorción, absorción, etc)~\cite{oliveira2019modelling}. 
+%% Una vez desarrollado este modelo, mediante técnicas adecuadas de escalado de los fenómenos advectivos, se podrá obtener un prototipo numérico en la escala industrial deseada. Estas técnicas de escalado resultan entonces uno de los desafíos computacionales más importantes del proceso numérico, se han explorado diferentes estrategias, como el escalado de simulaciones tipo Lattice--Boltzmann~\cite{lichtner2007upscaling}, el modelado de la red en gran escala~\cite{varloteaux2013pore}, el tratamiento promediado de propiedades porosas del medio~\cite{nogues2013permeability}, o el modelado multiescala basado en la técnica de homogenización fundada en la idea de volumen representativo~\cite{blanco2017homogenization}.
+
+%% Una de las propiedades clave son los coeficientes o parámetros cinéticos de reacción cuando se utilizan los modelos clásicos, que pueden diferir en órdenes de magnitud, respecto de los medidos en escala batch~\cite{porta2012upscaling}. Esta discrepancia está asociada a las condiciones fisicoquímicas y fluidodinámicas en que se realizan las reacciones, ya que en los reactores monolíticos, generalmente las reacciones se encuentran limitadas por fenómenos de transporte o transferencia de masa y energía~\cite{alhashmi2016impact,engdahl2017lagrangian}, situación no-ideal desde el punto de vista de la eficiencia del proceso o para alcanzar el equilibrio termodinámico.
+
+%% En cuanto a los procedimientos informáticos para el acople de las escalas, existen algunas herramientas con modelos de transporte reactivos de escala continua, como ParCrunchFlow~\cite{beisman2015parcrunchflow} y PFLOTRAN~\cite{Pflotran}, con implementaciones paralelas recientes. Sin embargo, estos dos paquetes muestran una muy limitada colección de modelos reactivos y hacen compleja la implementación de nuevos modelos. Existen otros paquetes que ofrecen una mayor variedad de modelos aunque su costo computacional es restrictivo debido a la falta de paralelización~\cite{steefel2015reactive,parkhurst2015phreeqcrm}.  
+
+
+%% \subsubsection{Intefases líquido-gas no confinadas: superficie libre}
+
+%% El flujo con superficie libre se encuentra presente en diversos problemas de interés, como ser el escurrimiento en canales naturales o artificiales, en entornos marítimos en general~\cite{Yoshimura2019} y con aplicaciones a generación de energía~\cite{Deng2019,Suja2018}, o en la agitación en tanques de distintas dimensiones y formas~\cite{Kang2019,Saghi2018}. Los prototipos numéricos aptos para estudiar tales problemas, así como también los efectos del flujo en los contenedores, en las costas o en elementos interpuestos, requieren la resolución de las ecuaciones de Navier-Stokes más una estrategia para representar la posición de la interfase, pudiendo optarse por aproximaciones diversas, que pueden describirse, de acuerdo a Cruchaga et al.~\cite{Cruchaga2016} como de malla fija o de malla móvil, métodos de partículas~\cite{Idelsohn2004,Liu2010} o aproximaciones híbridas con mallas lagrangianas o partículas representando las interfases~\cite{Minev2003,Cruchaga2013}.  
+
+%% Los métodos de malla móvil representan explícitamente la interfase entre fluidos o superficie libre en nodos, lados o caras de los elementos que, al evolucionar la frontera, se desplazan. Estos desplazamientos afectan la forma del dominio analizado, de manera tal que se requiere un remallado o reacomodamiento de las entidades numéricas que describen al prototipo numérico, como por ejemplo en las técnicas tipo {\it Arbitrary Lagrangian-Eulerian} (ALE)~\cite{Hughes1981} y similares. Además, cuando la fase menos densa es poco significativa en el flujo, se acostumbra resolver únicamente la fase más densa, con la consecuente disminución de costos computacionales~\cite{Charlot2015,Tang2019}. 
+
+%% Las técnicas más empleadas actualmente son las de malla fija, que consisten en resolver la dinámica del fluido y, simultánea o intercaladamente, un campo adicional que indica qué sectores del dominio se encuentran ocupados por una u otra fase. Entre estas, las aproximaciones más difundidas son las de {\it Volume of Fluid} (VOF)~\cite{rf:hirt0} y las de conjunto de niveles o {\it Level Set} (LS)~\cite{Sussman1994}. 
+%% % 
+%% Los métodos VOF emplean una fracción de fluido para indicar la condición de cada celda, ya sea llena con uno u otro fluido, o parcialmente ocupada por uno y otro, a partir de lo cual se emplea alguna técnica para determinar de qué manera la interfase atraviesa geométricamente la celda~\cite{deshpande2012evaluating,OWKES2014,MARIC2018}. 
+%% %
+%% Por su parte, las aproximaciones LS recurren a una función escalar continua en el dominio de análisis, cuyo valor nulo corresponde a la interfase, mientras que valores positivos y negativos identifican a una y otra fase, con transición entre fases suave. Existen numerosas variantes dentro de la misma propuesta, o bien aproximaciones similares con propiedades mejoradas~\cite{Olsson2007,Thompson1986,Cruchaga2009}. 
+
+%% Hoy día, la complejidad y amplitud de los problemas con interfases móviles hacen necesario que los tiempos de cómputo sean razonables para la obtención de resultados precisos, motivo por el cual se recurre a: (i) el uso de plataformas de supercómputo, tanto en equipamiento como en algoritmos~\cite{Engsig-Karup2012}; (ii) la solución en dominios de cálculo parciales, para los cuales se emplean condiciones de borde especiales y herramientas específicas para la generación de oleaje de ingreso~\cite{Deng2019,Bihs2016191,Chen2014numerical}.
+
+
+
+%% \subsubsection{Interfases líquido--solido no confinado: interacción fluido estructura}
+
+%% La interacción entre estructuras o cuerpos inmersos y el líquido que los contiene se encuentra presente en numerosos problemas ingenieriles de relevancia, tales como en transporte de microesferas~\cite{PazSanchez2016}, convertidores de energía de olas~\cite{Ducassou2017}, sedimentación~\cite{jing2016extended} y segregación~\cite{Sun2006} de partículas en geotecnia y en estructuras offshore sometidas a oleaje, fijas o móviles~\cite{Ghasemi2014}. 
+
+%% Las fuerzas hidrodinámicas de arrastre y sustentación proveen información para el estudio de la estabilidad y resistencia en las estructuras, sean solicitaciones estáticas o dinámicas. La determinación precisa de estas acciones depende de la estrategia de representación del elemento inmerso en el seno del fluido, y la física complementaria a resolver, ya sea un problema elástico~\cite{rf:garelli-laar2014}, la dinámica de un cuerpo rígido~\cite{GonzalezPOF}, o una regla conocida para el desplazamiento del elemento inmerso~\cite{Costarelli2016,GonzalezJFE}.
+
+%% El abordaje del problema de la representación del objeto o cuerpo en un fluido puede realizarse de dos maneras: considerándolos como dominios separados, o bien incluyendo el dominio del sólido con algún tipo de marcador en una discretización fija para el fluido. 
+%% %
+%% La representación de los campos de fluido y de sólido en dominios separados se realiza mediante estrategias, por ejemplo, de tipo lagrangiana-euleriana arbitrarias o ALE~\cite{PazSanchez2016,rf:garelli-laar2014}. De esta manera, las fuerzas que surgen de la interacción se determinan con buena precisión integrando las tracciones sobre el elemento inmerso. Sin embargo, y en general, en los casos en los cuales un objeto toca o atraviesa un contorno, o interactúa con otros, la discretización pierde validez y no es posible resolver el problema, o bien insume altos costos de rediscretizacion.
+%% %
+%% En lo referido a la inclusión del sólido como parte del fluido, los métodos se distinguen por las reglas empleadas para distinguir las dos fases, ya sea como una frontera inmersa (IBM, {\it Immersed Boundary Method}) o como un cuerpo embebido. Las técnicas IBM requieren la representación explícita de la interfase, mediante una malla o conjunto de partículas, sobre las cuales pueden calcularse explícitamente las tracciones~\cite{peskin2002immersed,Costarelli2016}, mientras que en el fluido aparecen condiciones de borde internas a celdas o elementos que se incluyen como fuerzas adicionales en las ecuaciones de Navier-Stokes, o mediante la adición de términos de penalidad en velocidades~\cite{GonzalezJFE,GonzalezPOF}. En cambio, en las técnicas embebidas, la región sólida es incluida en el dominio del fluido mediante algún tipo de identificador en celdas, puntos o caras que se incluyen en la resolución del fluido empleando ciertas propiedades para distinguirla del líquido, como ser la permeabilidad o la viscosidad~\cite{Ducassou2017}. Otras técnicas embebidas pueden englobarse en los {\it Finite Cell Methods} (FCM) \cite{Lacis2016ASF,Cai2017MovingIB,Park2016API}, o en aproximaciones multigrilla~\cite{wan2007multigrid}.
+
+%% Finalmente, y en la consideración de objetos flotantes o sumergidos en flujo a dos fases o con superficie libre, es posible representar, por ejemplo, las intefases mediante VOF y el movimiento de los cuerpos con {\it discrete element method} (DEM)~\cite{jing2016extended}, o bien técnicas {\it smoothed-particle hydrodynamics} (SPH) con DEM \cite{xu2019analysis}.
+
+
+
+\section{RESULTADOS PRELIMINARES Y APORTES DEL GRUPO AL ESTUDIO DEL PROBLEMA EN CUESTIÓN}
+\label{sec:4resulprelim}
+\iftrue
+{\it (máx 3 pág.)
+Describir con suficiente detalle los resultados ya obtenidos por el grupo, sean publicados o no, que indican la capacidad técnica del grupo y la dedicación previa del grupo para el estudio propuesto.}
+\fi
+
+\textcolor{red}{Lo comentado está tomado del PIP2021 - Kler. Hay que resumir y seleccionar. Faltan cosas de BEM. }
+
+
+%% A continuación se describen algunos aportes realizados en cada una de las áreas de trabajo propuestas por parte del equipo de trabajo propuesto.
+%% \subsubsection{Flujo capilar y transporte}
+%% El flujo capilar, es un elemento clave en el funcionamiento de los dispositivos analíticos basados en papel, por ello, el grupo de trabajo viene estudiando el fenómeno desde hace algunos años~\cite{Berli16}. El flujo capilar, permite el flujo de fluidos y el transporte de sustancias de interés bioanalítico sin costo energético alguno y sin necesidad de dispositivos externos. 
+%% El grupo ha trabajado activamente en modelos de imbibición capilar basados en formulaciones sencillas de tipo Lucas-Washburn~\cite{schaumburg2018numerical} y actualmente se encuentra desarrollando nuevos modelos basados en adaptaciones para papel de modelos de capilaridad desarrollados en suelo, como los modelos de Brooks and Corey~\cite{BrooksAndCorey}, Van Genuchten~\cite{VanGenuchten} y LET~\cite{lomeland2018overview}, utilizando como base la ecuación de Richards.
+
+%% Respecto del transporte de solutos en medios no-saturados es un tema de estudio con mucha actividad reciente, pero con pocos antecedentes en lo referido a formulaciones numéricas consistentes y/o validadas~\cite{mora2019patterning}. El grupo posee antecedentes en el desarrollo de varios prototipos numéricos que involucran la resolución del transporte escalar en medios porosos aplicados a dispositivos microfluídicos basados en papel~\cite{schaumburg2018numerical,schaumburg2020comprehensive}. 
+
+%% \subsubsection{Generación de microgotas}
+%% A diferencia de los tópicos anteriores, la trayectoria del grupo de investigación en esta temática es más reciente y con una componente experimental más avanzada que la computacional. Esto radica en el hecho de que en el contexto local, algunos grupos de I+D se encuentran desarrollando dispositivos para la generación de microgotas y microcápsulas de doble y triple capa~\cite{Marengo2019generation,Olivares2018connection} y han requerido a nuestro grupo prototipos numéricos a los fines de afrontar adecuadamente esta etapa inicial. 
+
+%% \subsubsection{Flujo reactivo en medios microestructurados}
+%% Dada la experiencia del grupo en dos tecnologías particulares, como son los análisis de flujo lateral~\cite{schaumburg2018numerical} y la electroforesis capilar tanto en canales abiertos~\cite{damian2018open} como en papel y medios porosos~\cite{schaumburg2020comprehensive}, existe una gran conocimiento acerca de la implementación de diferentes tipos de reacciones en la ecuación de transporte, y el acople de ésta con la solución de flujo estacionario. Para tales aplicaciones se han explorado mecanismos reactivos tipo ácido-base~\cite{Kler13supg}, antígeno-anticuerpo~\cite{Berli16}, y enzimáticas con cinéticas de tipo Michaelis-Menten~\cite{kler2011modeling}.
+
+%% Recientemente, el grupo ha colaborado con la extensión del código \texttt{porousMultiphaseFOAM}~\cite{porousMultiphaseFoam} para la inclusión de una ecuación de transporte multiespecie en el régimen de flujo no saturado resuelto mediante dicha herramienta. Esta ecuación de transporte multiespecie incluye además 
+%% términos reactivos de orden variable que permiten modelar diversos tipos de reacciones.
+
+%% Utilizando esta herramienta, dos alumnos de grado (dirigidos por miembros del grupo) han concluido su proyecto final de Ingeniería en sistemas de información, resolviendo
+%% cinéticas discontinuas tipo Liesegang en medios porosos~\cite{PFCHGG}.
+
+%% \subsubsection{Flujo con Superficie libre}
+
+%% Los casos de flujo a dos fases o con superficie libre fueron estudiados en el grupo de trabajo mediante dos estrategias diferentes, en ambos casos orientada a flujo en tres dimensiones espaciales y resueltas mediante elementos finitos, incorporadas al código PETSc-FEM~\cite{rf:petscfem-gh}. Dicho código, diseñado para resolver multifísica en entornos de computación de alto desempeño, ha sido desarrollado colaborativamente en el Centro de Investigación de Métodos Computacionales (CIMEC)~\cite{rf:cimec}. En el caso particular del módulo de Navier-Stokes, la solución se obtiene empleando elementos finitos estabilizados. %con estabilización numérica de tipo {\it streamline upwind/Pe\-trov-Galerkin} (SUPG)~\cite{rf:brooks-hughes} y {\it pressure stabilizing/\-Pe\-trov-Galerkin} (PSPG)~\cite{rf:tezduyar1}.
+
+%% Para flujo a dos fases, se desarrolló una técnica en elementos finitos de tipo {\it level set} (LS)~\cite{rf:lbattaglia_ijnme,rf:lbattaglia_ijcfd}. Esta técnica fue luego mejorada al implementar una estrategia de conservación de masa de carácter global, junto con la inclusión de un modelo simplificado apropiado para representar la disipación viscosa que se produce en el flujo, de manera tal que fue posible resolver ejemplos de rotura de presa~\cite{Cruchaga2016} y de agitación en largos períodos de simulación~\cite{Cruchaga2016,Battaglia2018}. 
+
+%% Para flujos a una fase, se desarrolló una estrategia ALE con la cual se resolvieron varios casos de agitación en dominios acotados con resultados experimentales y numéricos de referencia, así como también casos de flujo con contornos abiertos. Empleando esta técnica, se resolvieron inicialmente ejemplos académicos de pequeños desplazamientos y flujo laminar~\cite{Battaglia2006,Battaglia2012}, mientras que para desplazamientos de superficie libre de mediana a gran amplitud~\cite{BattagliaMECOM18,BattagliaFEF19,BattagliaENIEF19}, con disipación turbulenta, fue preciso incorporar un mecanismo de conservación de masa global, mejorar la estabilización para el transporte de la superficie libre, e integrar una metodología de movimiento de malla apta para resolver mayores deformaciones en el dominio~\cite{Lopez2008}.  
+
+%% Empleando el método tipo ALE, se desarrollaron oportunamente condiciones de borde absorbentes para dos~\cite{rf:lbattaglia_enief11} y tres dimensiones espaciales~\cite{rf:lbattaglia_maci13,BattagliaENIEF2013}, con el propósito de simular problemas con contornos artificiales sin reflexiones espurias originadas en las condiciones de borde, reduciendo así las dimensiones de los dominios a estudiar. %Estas condiciones, similares a una playa numérica, se aplican en las inmediaciones de contornos de ingreso y salida con funciones de transición suaves entre el contorno propiamente dicho y el dominio libre. 
+
+%% En cuanto al acceso a los resultados experimentales empleados para validar las técnicas mencionadas, desde el año 2013 se trabaja en colaboración con el grupo de investigación de la Dra M. Cruchaga, de la Universidad de Santiago de Chile (USACH), mediante intercambios internacionales como el de la Red CYTED CADING~\cite{CADING2020}, entre otros. 
+
+%% \subsubsection{Interacción fluido-estructura}
+
+%% El grupo de trabajo se ha abocado de manera reciente a dos enfoques diferentes para la simulación fluido-estructura, particularmente con cuerpos rígidos. 
+
+%% Una primera aproximación se obtuvo mediante la interacción de un flujo, con o sin superficie libre resuelto con las estrategias programadas en PETSc-FEM~\cite{rf:petscfem-gh} y cuerpos esféricos rígidos cuyo movimiento se resolvió empleando un esquema de Newton. La técnica fue validada resolviendo el problema clásico de sedimentación de una esfera, y un caso de agitación, con superficie libre, en un recipiente con una división vertical incompleta en la parte inferior que deja pasar el agua de un sector a otro del recinto al ser sometido a una aceleración horizontal armónica con una esfera de flotación ligeramente negativa inmersa~\cite{zamora2019numerical,BattagliaWCCM2018}. 
+
+%% Una segunda aproximación consistió en desarrollar un método embebido con el propósito de representar cuerpos móviles inmersos en un fluido que, a fin de mejorar el desempeño computacional y acceder a resolver problemas con mayor grado de detalle, fue desarrollado en el código de volúmenes finitos Code$\_$Saturne~\cite{Saturne2020}. En esta aproximación, el espacio ocupado por un sólido es diferenciado del fluido por una permeabilidad ficticia que se incluye en las ecuaciones de Navier-Stokes, sin necesidad de definir explícitamente la interfase sólido-fluido y accediendo a la resultante de fuerzas sobre el cuerpo como la integral de la permeabilidad ficticia multiplicada por la diferencia de velocidades entre el cuerpo y el fluido. De esta manera, se resolvieron problemas de flujo no estacionario con elementos fijos~\cite{ZamoraENIEF19}. 
+
+%% \subsection{Resultados preliminares}
+%% %una pagina-> 
+
+%% \subsubsection{Flujo capilar y transporte}
+
+%% Uno de los principales resultados preliminares producido por el grupo es un software para simulación de frentes de imbibición que permite contrastar y validar diferentes modelos de imbibición a partir de datos experimentales o de la literatura. Dicho software, llamado \texttt{fronts}~\cite{frontsweb} resuelve de manera muy eficiente la ecuación de difusión no lineal transiente (ecuación de Richards) que resulta al modelar frentes de flujo de imbibición capilar. El toolbox \texttt{fronts} tiene implementados por defecto varios modelos conocidos de la literatura, pero habilita al usuario a la sencilla implementación de nuevos modelos a través de funciones de difusividad o relaciones de clausura entre la presión capilar y la saturación. Al estar basado en la transformación de Boltzmann, otorga flexibilidad total para el aprovechamiento discreto de sus resultados en términos de campos de resolución arbitraria para la saturación, la velocidad o la presión.
+
+%% Para prototipos 3D que incluyen trasporte escalar multiespecie el grupo trabaja en colaboración con los desarrolladores de una de las herramientas más potentes que hay disponibles para el abordaje de estos problemas: \textit{porousMultiphaseFOAM}, un toolbox desarrollado por el Instituto de Mecánica de Fluidos de Toulouse, que funciona en el marco de la plataforma de código abierto \of{}~\cite{Horgue2015}. Todos los avances logrados hasta ahora en dicho código, son también aplicables para flujos capilares en diversos medios porosos como papel, suelos, rocas y materiales constructivos como hormigón poroso, entre otros. 
+
+%% \subsubsection{Generadores de microgotas}
+%% En la temática relacionada a generadores de microgotas, 
+%% un becario doctoral y un alumno de grado se encuentran desarrollando un compendio digital público de modelos empíricos para generadores de microgotas. La maqueta de la interfase ya se encuentra en su etapa final y el trabajo de compendiar los modelos se encuentra en desarrollo. Paralelamente, un becario postdoctoral se encuentra estudiando métodos experimentales para la producción a través de microgotas de cristales de perovskitas, lo que contribuirá en lo inmediato a finalizar el compendio. Se han desarrollado prototipos básicos de flujo bifásico mediante la herramienta Basilisk~\cite{popinet2015quadtree}, quedando demostrada su utilidad para la aplicación objetivo. Por último es mencionable que se solicitó una beca doctoral a CONICET (llamado 2020) para trabajar en la temática de manera más profunda.
+
+%% \subsubsection{Flujo reactivo}
+%% En el caso de los modelos de flujo en medios porosos estructurados, una becaria doctoral se encuentra desarrollando los estudios preliminares para arribar a una formulación multiescala basada en homogeneización~\cite{blanco2017homogenization}. Se han realizado pruebas de verificación de compatibilidad para la interacción entre la biblioteca reaktoro~\cite{reaktoroweb} y \of{}.
+%% Finalmente, es mencionable que mucha de la experiencia del grupo en el tratamiento de flujo y transporte reactivos que permiten esperar resultados positivos en esta dirección, puede verse en el toolbox de simulación para electromigración desarrollado por el grupo llamado \texttt{electroMicroTransport}~\cite{electroMicroWeb}.
+
+%% \subsubsection{Flujo con superficie libre}
+
+%% Actualmente, se trabaja en simulaciones numéricas de casos de agitación con excitaciones armónicas en tanques de base no plana, para los cuales aparecen sectores de desprendimiento de vórtices que afectan el desplazamiento de la interfase~\cite{BattagliaENIEF19}, con validación expermental. 
+
+%% Asimismo, se están aplicando métodos tipo VOF en programas de volúmenes finitos de altamente eficientes desde el punto de vista computacional, Code$\_$Saturne~\cite{Saturne2020} y \of{}~\cite{openfoam,MarquezExtended}, particularmente en el desarrollo de un estanque de olas numérico para el análisis del efecto del flujo con superficie libre en torno a estructuras sumergidas total o parcialmente, como ser estribos de puentes o fustes de estructuras {\it off-shore}, para el cual ya se han obtenido algunos resultados preliminares~\cite{RiosENIEF19}. 
+
+%% \subsubsection{Interacción fluido estructura}
+
+%% Una vez depurado el método embebido con el cual es posible determinar de manera eficiente las fuerzas que se producen en un sólido embebido estático~\cite{ZamoraENIEF19}, desarrollado como complemento a las rutinas estándar de Code$\_$Saturne~\cite{Saturne2020}, se ha procedido a la determinación de fuerzas sobre cuerpos en movimiento, ya sea en desplazamientos o rotaciones constantes, o sometidos a movimientos armónicos, como en~\cite{Costarelli2016}. La correcta determinación de las fuerzas sobre los cuerpos en movimiento, afectadas por las aceleraciones a las que éste se ve sometido, así como también por las fuerzas debidas a la inercia de la masa del cuerpo embebido, es un requerimiento de base para resolver las ecuaciones de movimiento de cuerpos rígidos con desplazamientos que dependen únicamente de su interacción con el fluido. 
+
+
+\section{CONSTRUCCION DE LA HIPOTESIS y JUSTIFICACION GENERAL DE LA
+METODOLOGIA DE TRABAJO} 
+
+{\it (máx 1 pág.)
+A partir de lo expuesto en la introducción y los datos preliminares proponer la hipótesis de trabajo y justificar la metodología propuesta.}
+
+
+Se desarrollarán modelos numéricos y sus correspondientes implementaciones computacionales a través de la
+discretización de los sistemas de ecuaciones diferenciales ordinarias que representan el comportamiento de los
+sistemas físicos a estudiar a través de los métodos de elementos finitos y volúmenes finitos. El código generado
+bajo licencias de libre distribución será ejecutado en las facilidades de cómputo presentes en CIMEC.
+
+\textcolor{red}{Abajo, lo del PICT2018 como molde, comentado.}
+
+%% Los problemas a resolver pueden ser descriptos mediante ecuaciones diferenciales en derivadas parciales con respecto al tiempo y a las coordenadas espaciales. En el caso del flujo de fluidos, se considerarán las ecuaciones de NS para el caso incompresible, viscoso, newtoniano e isotérmico, con las condiciones de borde propias de cada caso. 
+%% Para el caso del flujo capilar de llenado en medios porosos se utiliza una simplificación de las ecuaciones de NS en un esquema tipo Darcy con permeabilidades y porosidades distribuidas.
+%% Uno de los principales inconvenientes de esta formulación diferencial es la dificultad para
+%% representar adecuadamente las variaciones del campo de velocidad ante discontinuidades en la porosidad de los materiales, por lo que se propone enriquecer esta formulación con términos adicionales de tipo Brinkmann o Forchheimer~\cite{Mendez09}.
+%% En el caso de las ecuaciones de transporte, se utiliza un modelo de conservación tipo advectivo-difusivo-dispersivo-reactivo donde los esquemas reactivos varían de acuerdo a la aplicación (ácido-base, antígeno-anticuerpo, hibridación, entre otros).
+
+%% %
+%% Las metodologías de discretización numérica a aplicar para resolver numéricamente las ecuaciones antes mencionadas serán las de los métodos de volúmenes finitos, elementos finitos y elementos de borde, aptos para abordar la resolución de problemas sobre dominios de geometrías de forma general. Se emplearán recursos de resolución numérica apropiados para las formulaciones empleadas. Otras metodologías de simulación serán utilizadas para la resolución de problemas auxiliares o para la verificación de resultados.
+%% %
+
+%% Las diferentes técnicas a aplicar para simular flujos con interfases involucran la resolución de dos o más problemas acoplados. En el caso general, se empleará una metodología de acoplamiento débil, que consiste en resolver numéricamente cada campo por separado en cada paso de tiempo, mediante programas específicos que coordinan el intercambio de información entre ellos.
+%% %
+%% Dependiendo de las estrategias que se empleen para
+%% determinar la posición de las interfases, ya sean fluido-fluido o fluido-sólido, los problemas que se acoplan al de NS pueden ser: \vspace{-0.3cm}
+%% \begin{itemize}
+%% \item[(i)] para el método de captura de interfase, la advección de la función de level set y su reinicialización;  \vspace{-0.3cm}
+%% \item[(ii)]la ecuación de transporte, a fin de resolver tanto los campos escalares (concentraciones) transportados, como la posición de la interfase en el caso del método de pseudoconcentración; \vspace{-0.3cm}
+%% \item[(iii)] la dinámica de cuerpos inmersos, incluyendo la interacción de estos con el fluido y los contornos; \vspace{-0.3cm}
+%% \item[(iv)] para las fronteras móviles embebidas representando los cuerpos inmersos, un algoritmo específico para resolver la deformación de las celdas al desplazarse el cuerpo.
+%% \end{itemize}
+
+%% En el caso particular de BEM, una t\'ecnica num\'erica que recurre al uso de las funciones de Green, resulta ventajoso en su aplicación a problemas lineales, en particular los extendidos a infinito, que dan lugar a ecuaciones integrales de borde, que suelen reducirse a integrales en el borde (o contorno o frontera) del dominio. Para la determinación de acciones del fluido (tracciones) sobre los cuerpos involucrados no requiere otras instancias de solución, siendo apto para geometr\'{\i}as intrincadas, especialmente en 3D.
+
+%% Los programas se desarrollarán en lenguajes o códigos que permiten la programación orientada a objetos, tal que los módulos o librerías que resuelven diferentes problemas físicos pueden comunicarse mediante aplicaciones diseñadas específicamente, y considerando su ejecución en estructuras de cálculo distribuido como los clusters presentes en CIMEC. Este esquema modular permite, por ejemplo, el intercalado de instancias de movimiento de malla sin afectación significativa de la estructura del programa. 
+
+%% Los resultados obtenidos mediante las
+%% técnicas antes mencionadas serán comparados con resultados experimentales o analíticos disponibles en la literatura, o accesibles mediante intercambios con otras
+%% instituciones asociadas al grupo colaborador. Se realizarán también comparaciones con otros resultados numéricos. 
+%% %De los resultados de la comparación se establecerá el grado de precisión con el cual pueden representarse los problemas que pueden resolverse con las metodologías estudiadas.
+
+
+
+
+
+\section{TIPO DE DISEÑO DE INVESTIGACION Y MÉTODOS}
+\iftrue
+{\it (máx. 9 pág.)
+Se deberá organizar el estudio propuesto en secciones mayores, correspondientes a los objetivos específicos, y, secciones menores, correspondientes a experimentos específicos para explicar:
+1. La base racional de cada experimento o estudio propuesto.
+2. Como se llevara a cabo el experimento o estudio.
+3. Que controles se usarán – en caso de ser necesarios - y porqué.
+4. Que técnicas específicas se utilizarán discutiendo aspectos más críticos o
+modificaciones de manipulaciones habituales: Respecto a las técnicas y
+tecnologías empleadas (los métodos) si son parte del patrimonio del grupo y
+han sido descriptas en publicaciones propias o en los datos preliminares - no
+deberán detallarse y solo deberá citarse la fuente-. Explicar si se recibirá
+apoyo técnico de colaboradores.
+5. Como se interpretaran los datos a la luz de lo que se quiere estudiar y como
+se contrastará con la hipótesis de trabajo.
+6. Tratar de evaluar los potenciales problemas y limitaciones de la metodología y
+técnicas propuestas y en lo posible proponer alternativas.}
+
+\textcolor{magenta}{Mechar con PID UTN (más actualizado)}
+
+\textcolor{magenta}{Tomado de PIP2020}
+\fi
+
+
+\subsection{Acerca del grupo de trabajo}
+
+\textcolor{red}{revisar: Marcela Cruchaga. }
+
+\textcolor{red}{revisar: Gente relacionada con fonarsec/UTN-FRBB. }
+
+Como se ha indicado en secciones previas, el grupo responsable de la propuesta se compone de investigadores formados (adjuntos, independiente y principal en CIC CONICET) con lugar de trabajo en CIMEC.
+%
+En particular, J D'El\'{\i}a es Responsable T\'{e}cnico ante el SNCAD de los clusters de c\'{o}mputo en la UE. 
+%
+En el grupo colaborador se incluyen a aquellos investigadores formados que colaboran ya sea en tareas experimentales de validación informadas y proyectadas: Federico Schaumburg (INTEC), Raúl Urteaga (IFIS), y Hugo G. Castro (IMIT, Chaco), como en la formulación matemática y numérica en BEM: el Inv. Adjunto Ezequiel López y la Inv. Asistente Sofía Sarraf (dirigida por J. D'Elía), ambos en el IITCI (UNCo-CONICET), Universidad Nacional del Comahue (UNCo), Neuquén.
+%
+Completan el grupo colaborador becarios doctorales dirigidos por los integrantes del grupo responsable que se encuentran trabajando temáticas afines al proyecto. 
+%
+Otros investigadores con los cuales hay vínculos de colaboración establecidos son Marcela Cruchaga (USACH) y Marco Schauer (Institut für Statik, TU Braunschweig, Alemania)
+\cite{Battaglia2018,Cruchaga2013}. Poner trabajos en congresos 2021 en común. 
+%
+\textcolor{red}{Vinculaciones por BIOTRAFO?}
+
+
+
+
+\subsection{Descripción de la metodología}
+
+Los problemas a resolver pueden ser descriptos mediante ecuaciones diferenciales en derivadas parciales con respecto al tiempo y a las coordenadas espaciales. El abordaje del problema se lleva a cabo en el marco teórico de la mecánica del continuo. La descripción cuantitativa del transporte de dos o más fluidos transportando especies (bio)químicas se realiza a partir de los principios de conservación de cantidad de movimiento, energía, y materia. Básicamente se trata de un conjunto de ecuaciones diferenciales acopladas quedando el problema completamente definido cuando se fija el dominio de aplicación, las condiciones iniciales y de borde. En el caso del flujo de fluidos, se considerarán las ecuaciones de Navier--Stokes para el caso incompresible, viscoso, newtoniano e isotérmico. 
+
+La formulación e implementación de los cálculos se hará utilizando el Método de Volúmenes Finitos (MVF) en las plataformas \of{} y Code\_Saturne. El MVF consiste en la discretización de la ecuaciones de conservación en forma débil, es decir mediante el balance de flujos en las caras de un dominio dividido en una cantidad finita de volúmenes, lo cual da lugar a su nombre. El método es inherentemente conservativo, cualidad de suma importancia cuando se desean resolver problemas de flujo incompresible y/o transporte de especies que reaccionan. 
+Una vez definidos los dominios, las ecuaciones, las propiedades fisicoquímicas, y las condiciones iniciales y de borde en las plataformas mencionadas, se resolverán en computadoras personales, clusters locales~\cite{C3} o supercomputadoras asociadas al SNCAD~\cite{rf:sncad}, según la magnitud del problema.
+
+Se detallan a continuación algunas particularidades de los modelos matemáticos y estrategias computacionales a utilizar para cada aplicación:
+
+\subsubsection{Flujo capilar y transporte}
+Para el caso del estudio del flujo capilar, conviene separar en casos donde se estudia el flujo no-saturado, incluyendo la forma del frente de imbibición, y flujos saturados.
+Para el primer caso, conviene utilizar la formulación conocida como ecuación de Richards~\cite{Richards}, cuya expresión simplificada para medios homogéneos es:
+\begin{equation} \label{eq:Richards}
+    \frac{\partial\theta}{\partial t}-\frac{k \rho g}{\mu}\nabla\cdot\left(\frac{k_r}{C}\nabla\theta\right) = 0
+\end{equation}
+donde $\theta$ es la saturación del medio, $k$ representa la permeabilidad del medio saturado, $\rho$ y $\mu$ la densidad y viscosidad del fluido, y $k_r$ y $C$ representan la permeabilidad relativa y la \textit{capacidad capilar del medio}. Estos dos últimos parámetros son función de la saturación $\theta$, y dicha dependencia es objeto de estudio, siendo los modelos más utilizados los de Brooks--Corey~\cite{BrooksAndCorey}, Van Genuchten~\cite{VanGenuchten} y LET~\cite{lomeland2018overview}. Esta ecuación es resuelta de una manera muy eficiente para éstos y otros modelos en \texttt{fronts}.
+
+Para el caso de flujo en medios porosos saturados, se utiliza la siguiente generalización de la ecuación de Navier--Stokes para la conservación de momento:
+\begin{align}
+\label{eq:NS_PM1}
+\frac{\tau^2}{\phi}\frac{\partial \mathbf{u}}{\partial t} + \frac{\tau^2}{\phi}\mathbf{u}\cdot\nabla\left(\frac{\mathbf{u}}{\phi} \right) = \frac{\mu}{\rho}\nabla^2\left(\frac{\mathbf{u}}{\phi}\right)-\frac{1}{\rho}\nabla p +\frac{\mu\tau}{\rho}\frac{\mathbf u}{K}
+\end{align}
+donde $\tau$ y $\phi$ representan la tortuosidad y la porosidad del medio, $\rho$ es la densidad del fluido, y $\mathbf{u}$ y $p$ los campos incógnita de velocidad y presión. Cabe destacar que esta ecuación es la más general que se conoce para este tipo de problemas y simplemente despreciando los términos correspondientes a cada caso (no todos los términos son no-nulos simultáneamente), se llega a formulaciones conocidas y muy utilizadas como la formulación de Darcy, Darcy--Forchheimer, o Darcy--Brinkman. Esta implementación se encuentra funcional y verificada en nuestro código \texttt{electroMicroTransport}~\cite{damian2018open}.
+
+Una alternativa a estas formulaciones de propiedades del medio poroso promediadas en el espacio son los modelos multiescala basados en homogeneización ya sea a través de la ecuación de Navier--Stokes~\cite{blanco2017homogenization} o a través de una reformulación de las relaciones de clausura entre la saturación, permeabilidad y presión capilar en la ecuación de Richards. Este último enfoque es novedoso y uno de los ejes principales de una tesis de una becaria doctoral del grupo.
+
+En cuanto al transporte de especies en medios porosos, ya sea para modelar analitos en ensayos de flujo lateral, contaminantes en acuíferos u otros escalares de interés, se modela mediante la superposición de diferentes tipos de flujo y un término reactivo que propicia la generación o extinción de dicho escalar. Formalmente, la concentración de dicho escalar $C^j$, se obtiene resolviendo la siguiente ecuación:
+\begin{align}
+\label{eq:TranpPorous}
+\frac{d(C^j\phi)}{dt}&=-\mathbf \nabla \cdot\left(\frac{\mathbf{u}}{\phi} (C^j\phi)-\left(\frac{D^j_0}{\tau^2}+s_f|\frac{\mathbf{u}}{\phi}| \right) \nabla \left(C^j \phi\right)\right)+r^j\phi
+\end{align}
+donde $s_f$ es el coeficiente de dispersión y $r^j$ el término reactivo.
+Para este caso, los diferentes tipos de flujo considerados son (en orden de aparición en la ecuación desde la izquierda) el flujo advectivo, el flujo difusivo, y el flujo dispersivo. Esta ecuación ya se encuentra implementada y validada en nuestro software \texttt{electroMicroTransport}. Los términos reactivos pueden ser de las naturalezas más variadas, como adsortivos, ácido--base, de hibridación, enzimáticos, inmunológicos, etc. La formulación de estos términos reactivos forma parte de las tareas asociadas al paquete  "Flujo reactivo".
+
+
+\subsubsection{Simulación de generadores de microgotas}
+
+Para estudiar la dinámica en la formación de microgotas, tanto la fase continua como la dispersa, se modelan como incompresibles, con propiedades reológicas constantes e inmiscibilidad perfecta. En una juntura T microfluídica, disposición típica de los generadores de microgotas, el número capilar indica que los efectos de tensión superficial son dominantes en la medida adecuada para la formación de gotas monodispersas. 
+
+Justamente el número capilar es la base de todos los modelos semi-empíricos presentes en la literatura, que se compendiarán en el calculador web que se propuso como tarea. La interfase se desarrollará en \texttt{java script} y realizará todos los cálculos del lado del cliente, desestimando el requisito de tener un servidor dedicado. 
+
+
+Cuando se utilizan modelos menos empíricos, se debe comenzar con poder cuantificar los efectos de la tensión superficial. Estos efectos se deben contemplar agregando un término de fuerza superficial $\mathbf{F_s}$ a la ecuación de Navier--Stokes para la conservación de momento. Esta fuerza se calcula como:
+\begin{align}
+    \mathbf{F_s}=\int_{S(t)}\gamma\kappa(x,t)\mathbf{n}dS
+\end{align}
+donde $\gamma$ es el coeficiente de tensión superficial, $\kappa(x,t)$ la curvatura de la interfase $S(t)$, cuyo vector normal es $\mathbf{n}$. La curvatura se calcula como:
+\begin{align}
+\kappa(x,t)=-\mathbf{\nabla\cdot n}
+\end{align}
+y el vector normal como:
+\begin{align}
+\mathbf{n}=\frac{\nabla \alpha}{|\nabla \alpha|}
+\end{align}
+donde $\alpha$ es la fracción másica de alguna de las dos fases definida de la manera estándar en el método de VOF.
+El desafío numérico de este esquema está en calcular de manera correcta las curvaturas para poder calcular de manera adecuada la fuerza actuante y determinar así el valor de $\alpha$ en todo en dominio en cada instante de tiempo. 
+
+Para los prototipos numéricos basados en esta estrategia, la primera alternativa para el manejo de la interfase es VOF. Aquí se utilizará una herramienta de simulación numérica de alto desempeño basada en MVF llamada \texttt{Basilisk}~\cite{popinet2015quadtree}. \texttt{Basilisk} es una herramienta de código abierto, paralela, programada en $C$, orientada a flujo multifásico, basado en el método de VOF y con diferentes estrategias para el tratamiento de las interfases, como el refinamiento adaptativo basado en \textit{octrees} y algoritmos de alto orden para el cálculo de curvaturas. Se validarán los resultados con datos experimentales de la bibliografía para los regímenes reológicos, geométricos y de operación simulados.
+
+Se espera que mediante el uso de \texttt{Basilisk} se simulen generadores de microgotas bajo diversas condiciones de operación, topologías y regímenes de flujo tanto para sistemas O/W como W/O. Existe un antecedente de este tipo de simulación, publicado hace algunos años por los desarrolladores de la herramienta, que otorga perspectiva de éxito en el corto plazo. Es importante mencionar que existen relaciones de colaboración fluidas entre CIMEC y los desarrolladores de \texttt{Basilik} en el instituto D'Alembert de París. 
+
+Sin embargo, el costo computacional de estas simulaciones basadas en VOF, es por ahora incompatible con procesos de diseño y prototipado rápido. Siendo necesario elaborar estrategias con menor costo computacional. 
+
+Tradicionalmente, una forma de disminuir el costo computacional de prototipos numéricos, es la disminución de la carga debida al dominio. Esto, implica la reducción de dimensiones (resolver problemas equivalentes en una o dos dimensiones) o disminuir la calidad de las mallas hasta lograr un compromiso adecuado precisión/costo. En el caso de los generadores de microgotas, excepto por los generadores coaxiales, resulta inadecuada la reducción dimensional~\cite{shao2013controlled}. Por otra parte, y sobre todo en el método de VOF, reducir la calidad de la malla puede resultar en la divergencia casi inmediata de las soluciones~\cite{mora2019numerical}.
+
+Otra estrategia para disminuir el costo computacional, es tener aproximaciones menos complejas a la física de los problemas. En este marco se encuentra el método de dos fluidos. Este método, de menor costo computacional que VOF, basa su estrategia en incorporar leyes de cierre (generalmente pseudo-empíricas) para ajustar los esfuerzos en la interfase de los fluidos, sin necesidad de resolver la zona con tanta precisión. Es sabido que el método de dos fluidos presenta muchos problemas de estabilidad y es muy sensible a la forma matemática de las leyes de cierre propuestas~\cite{de2017two}, por ello, en el marco de una tesis doctoral (y excediendo el alcance exclusivo de este proyecto), se investigará si se puede configurar una red neuronal para funcionar con mayor potencialidad que una simple regresión lineal a partir de los datos de VOF para enriquecer los modelos de dos fluidos. Para ello deben desarrollarse estrategias adecuadas que permitan la incorporación de parámetros reológicos y principios de conservación. 
+
+Se investigará acerca de las particularidades informáticas de esta implementación, a los fines de lograr arquitecturas de la red y estructuras de datos acordes a los requerimientos del problema planteado.
+
+\subsubsection{Flujo reactivo}
+En este caso, los mecanismos de reacción a estudiar revisten una complejidad moderada, dada la actividad de alta especificidad propia de las superficies catalíticas presentes en los reactores monolíticos, por ejemplo la oxidación en medio acuoso de lactosa a ácido lactobiónico en presencia de superficies oro-alúmina~\cite{regenhardt2020monolithic}. Dicho mecanismo contempla la reacción propiamente dicha entre la lactosa y el oxígeno adsorbidos sobre la superficie catalítica de oro-alúmina para obtener ácido lactobiónico en proporciones estequiométricas adecuadas. 
+La novedad/complejidad que requieren las nuevas implementaciones es contemplar la acción catalítica de la superficie oro-alúmina, ya que para esto se requiere contemplar diversos factores como la adsorción de los reactivos, el tiempo de adsoción/reacción, la liberación del sitio de catálisis, entre otros. 
+
+Se implementarán diferentes aproximaciones a este tipo de reacciones y a otras de similar interés industrial. En principio la herramienta propuesta, i.e. \texttt{Reaktoro}~\cite{reaktoroweb} debería satisfacer los requerimientos de la aplicación. De ser necesario, y al ser de código abierto, se podrá modificar para lograr la consecución de esta tarea.
+
+Se utilizará el prototipado numérico de alto desempeño basado en el método de volúmenes finitos (MVF) a través de la herramienta de código abierto OpenFOAM~\cite{OpenFOAM1} para optimizar diseños y condiciones de operación de los diferentes dispositivos. Estas actividades pueden incluir la proposición de nuevos modelos de transporte adecuados a las características del material propuesto o las condiciones de operación. 
+Es destacable que el grupo de trabajo tiene vasta experiencia en el desarrollo de algoritmos para la resolución tanto del flujo de fluidos como de diversos mecanismos de transporte no-tradicionales como dispersión mecánica, electromigración, dispersión electroforética, entre otros~\cite{damian2018open,schaumburg2020comprehensive}.  
+ 
+ Habiendo desarrollado las tareas mencionadas en los dos puntos anteriores, se procederá a la construcción de prototipos numéricos de alto desempeño para el estudio de los reactores monolíticos de interés. Cabe destacar el hecho de que los prototipos se resolverán en plataformas de cálculo distribuido presentes en el lugar de trabajo~\cite{C3} involucrando, en principio, herramientas para la resolución de flujo como \texttt{porousMultiphaseFOAM}~\cite{porousMultiphaseFoam} que contempla propiedades promediadas del medio poroso. En caso de que esta estrategia no brinde resultados adecuados en cuanto a su precisión numérica, puede contemplarse el estudio de estrategias de simulación multiescala basadas en homogeneización~\cite{blanco2017homogenization}. 
+ 
+ Finalmente, una vez implementados los prototipos numéricos, será conveniente desarrollar estrategias de validación basadas en literatura de la disciplina, o en experimentos conjuntos con el grupo colaborador que desarrolla estos reactores monolíticos. Para ello, el grupo colaborador dispone de reactores monolíticos agitados en donde realizar experimentos de transporte reactivo, por ejemplo, la mencionada oxidación selectiva de lactosa a ácido lactobiónico. También se cuenta con las herramientas adecuadas para analizar el desempeño de los sistemas bajo estudio en diferentes condiciones de trabajo según resulte necesario. Dada la dificultad de la instrumentación interna que presentan los prototipos reales, las validaciones se harán mediante parámetros promediados considerando las características y composición de los flujos de entrada y salida~\cite{regenhardt2020monolithic}.
+ 
+\subsubsection{Superficie libre}
+
+Las primeras actividades a llevar adelante consisten en adoptar programas en volúmenes finitos en entornos de computación de alto desempeño, ya sean Code$\_$Saturne~\cite{Saturne2020} u \of~\cite{openfoam}. Para ello, se prevé reproducir casos de validación a fin de precisar parámetros de resolución apropiados, ya sea en relación al resolvedor de volúmenes finitos, los parámetros de la representación de la superficie libre para VOF, los requerimientos de discretización, entre otros aspectos. 
+%
+A continuación, se establecerá una metodología para el cálculo de solicitaciones globales y detalladas en contornos~\cite{rf:chihhua}, así como también efectos de fuerzas y momentos en estructuras de soporte o vehículos de transporte~\cite{Toumi2009}, en el marco de la continuidad del estudio de la agitación en fluidos viscosos e incompresibles.  
+
+El estudio computacional de dominios con fronteras abiertas, tal como cierta sección de un canal a superficie libre, se ve afectado por efectos numéricos no deseados originados en los contornos artificiales impuestos debido a la reflexión de olas que en ellos se produce. Por este motivo, es de interés el desarrollo de un estanque de olas numérico (NWT, por sus siglas en inglés)~\cite{Hu20179}, caracterizado por (i) generadores de ondas de ingreso y (ii) condiciones de borde  absorbentes, que evitan reflexiones espurias en los contornos ficticios. %La adopción y/o adaptación de herramientas previamente desarrolladas para otro tipo de flujos permitirá evaluar efectos no estacionarios de desprendimiento de vórtices y oleaje en estructuras interpuestas a la corriente. 
+%
+En este sentido, se estudiarán modelos de producción de ondas con el propósito de reproducir el oleaje que se registra en condiciones naturales~\cite{Li2019,Romanowski2019,Stagonas2018}. A tal fin, las técnicas a emplear deberán considerar una regla de desplazamiento de ingreso para la superficie libre, y una regla para definir las velocidades en el mismo contorno. 
+En lo referido a reflexiones espurias de olas en contornos artificiales, producidas tanto en secciones de ingreso como de salida en régimen subcrítico, es preciso dotar al NWT de regiones diseñadas para evitar tales reflejos. Estas regiones pueden contar con propiedades absorbentes en general~\cite{Paz201152}, o definirse con condiciones de contorno variables~\cite{rf:storti-dynbc}. Técnicas similares~\cite{Chen2014numerical,Deng2019} serán tomadas como referencia para la validación y/o contraste. 
+Empleando estas técnicas, la caracterización de empujes hidrodinámicos sobre objetos sumergidos total o parcialmente, permitirán calcular acciones dinámicas en los objetos sumergidos~\cite{Suja2018} sin afectarlas con reflexiones espurias. 
+
+Como parte de la metodología, se prevé establecer una comparación con las estrategias a proponer en la Sec.~\ref{sc:fsi} en cuanto a precisión y escalabilidad en entornos de HPC a fin de contar con elementos de decisión al momento de optar por una u otra herramienta de cálculo. 
+
+\subsubsection{Interacción fluido estructura con cuerpos embebidos}
+\label{sc:fsi}
+
+La interacción de un fluido con un cuerpo inmerso se representa en la técnica embebida propuesta mediante un término de Darcy en las ecuaciones de Navier-Stokes para flujo incompresible:
+%
+\begin{align}
+\rho(\frac{\partial {\bf u}}{\partial t} + {\bf u} \cdot \nabla {\bf u}) &= - \nabla p + \mu \ \Delta {\bf u} + \kappa \left( {\bf u} - {\bf u_{\rm b}}\right)\label{eq:NS-LD}  \\ 
+\nabla \cdot {\bf u} &= 0
+\end{align}
+%
+donde ${\bf u}$ es la velocidad del fluido, $p$ es la presión y ${\bf u}_{\rm b}$ es la velocidad del cuerpo inmerso. Además, $\rho$ y $\mu$ son la densidad y la viscosidad dinámica del fluido, respectivamente; $\kappa$ es una resistividad hidraúlica ficticia empleada para identificar el cuerpo ($\kappa>0$), tal que en el fluido es $\kappa = 0$. La Ec.~(\ref{eq:NS-LD}) se resuelve mediante volúmenes finitos en el entorno de Code$\_$Saturne~\cite{Saturne2020}, donde se ha empleado al nivel de rutina de usuario. La representación del sólido queda supeditada a la discretización, cartesiana, ya que la máscara que permite aplicar la penalidad o resistividad $\kappa$ puede tomar valores unitarios o cero únicamente. La determinación de las fuerzas sobre los cuerpos inmersos consiste en calcular en cada instante de cálculo la integral del término de fuerzas $\kappa \left( {\bf u} - {\bf u_{\rm b}}\right)$ sobre todo el dominio que, en virtud de la máscara binaria, abarcará únicamente el sector ocupado por el cuerpo. A dichas fuerzas, y en el caso de cuerpos en movimiento, se adicionan los efectos inerciales de la masa del cuerpo en la suma de fuerzas global. Se ha concluido de los resultados preliminares que pueden obtenerse valores de fuerzas y momentos sobre un cuerpo con la precisión suficiente como para determinar las magnitudes de arrastre y sustentación~\cite{ZamoraENIEF19}, y se prevé su aptitud para resolver el problema de la dinámica del cuerpo rígido libre mediante un programa externo. 
+%
+Las dificultades en el cálculo de las fuerzas se encuentran relacionadas con problemas numéricos debidos a altos valores de la penalización $\kappa$ y a restricciones sobre el tamaño del paso de tiempo a emplear. 
+
+El estudio de la dinámica del cuerpo rígido viene dado mediante la ecuación de Newton-Euler %:
+%
+%\begin{equation}
+%\label{eq:NW-EU-Wo/C}
+%{\bf M} {\bf \Ddot{q}} = {\bf Q_{ext}} %+ {\bf Qr}
+%\end{equation}
+%
+%en la cual ${\bf M}$ es el tensor de inercia, ${\bf q}$ es el vector de %desplazamientos y ${\bf Q_{ext}}$ es el vector de fuerzas externas, en los tres casos en términos generalizados. 
+ a resolver mediante el acoplamiento con librerías externas al código actualmente desarrollado, que consiste en la determinación de fuerzas hidrodinámicas sobre el cuerpo, para resolver a continuación, mediante acoplamiento débil, la solución de la dinámica del cuerpo, que es retornada al solver del fluido para actualizar posición y velocidad del sólido rígido embebido en el fluido. Se encuentra previsto que el código 3DLSDEM~\cite{KAWAMOTO2016,jerves2016effects} sea empleado como librería en externa en el código de volúmenes finitos para materializar el proceso, bien un solver de tipo Newton~\cite{Ortega2017} para cuerpos esféricos. 
+
+Las metodología propuesta deberá ser evaluada en cuanto a convergencia, así como también se estudiará su escalabilidad que, se espera, muestre un buen desempeño debido a las características de regularidad de malla y uso de mecanismos de identificación de la posición de los cuerpos. La validación se realizará mediante la solución de benchmarks tales como los de sedimentación de partículas esféricas, o resultados experimentales disponibles. 
+%
+Las aplicaciones previstas se realizarán en la última etapa de trabajo, y consistirá en estudiar modelos generadores de energía undimotriz en conjunto con la Universidad de Santiago de Chile, así como también se aplicará al cálculo de fuerzas dinámicas sobre fustes de generadores eólicos near-shore, objeto de estudio en la sección de superficie libre. 
+
+\section{CRONOGRAMA DE TRABAJO}
+\iftrue
+{\it (máx. 1 pág.)
+Se presentará una tabla de doble entrada con las tareas desagregadas y los tiempos estimados que consumirán.}
+\fi
+% Para facilitar la lectura de la representación gráfica del 
+% cronograma se presenta antes un listado de tareas que guardan 
+% relación con las presentadas en la sección anterior.
+
+\def\b{\rule{0.6cm}{0.1cm}}
+%\def\pb#1{\parbox{7.0truecm}{#1}}
+
+\def\c{\rule{0.6cm}{0.05cm}}
+%\renewcommand\baselinestretch{0.5}  % interline
+
+%% {\small \subsection{Listado de tareas (para facilitar la lectura de la presentación gráfica)}
+
+%% \begin{itemize}[noitemsep]
+%% %
+%% % \paragraph*{Tarea 1. Flujo con superficie libre}
+%% \item Tarea 1. Flujo con superficie libre: 
+%%   \begin{itemize}[noitemsep]
+%%   \item Tarea 1.1. Captura de interfase para volúmenes finitos en computación de alto desempeño
+%%   \item Tarea 1.2. Regularización de la función marcadora para captura de interfase 
+%%   \item Tarea 1.3. Determinación de acciones sobre contornos y cuerpos sumergidos
+%%   \item Tarea 1.4. Modelos enriquecidos de imbibición capilar
+%%   \item Tarea 1.5. Producción de microgotas
+%%   \item Tarea 1.6. Validación de soluciones de problemas de flujo con superficie libre y a dos fases
+%%   \end{itemize}
+%%   %
+%% % \paragraph*{Tarea 2. Fenómenos de transporte en medios porosos}
+%% \item Tarea 2. Fenómenos de transporte en medios porosos: 
+%%   \begin{itemize}[noitemsep]
+%%   \item Tarea 2.1. Modelos de dispersión
+%%   \item Tarea 2.2. Modelos reactivos
+%%   \item Tarea 2.3. Interacción con campos eléctricos
+%%   \end{itemize}
+%%   %
+%% % \paragraph*{Tarea 3. Flujos con objetos inmersos mediante BEM}
+%% \item Tarea 3. Flujos con objetos inmersos mediante BEM:
+%%   \begin{itemize}[noitemsep]
+%%   \item Tarea 3.1 T\'ecnicas de cuadratura num\'erica complementarias en BEM.
+%% \item Tarea 3.2. Flujos con superficie libre/m\'ovil
+%%   modelados num\'ericamente con BEM.
+%%   \item Tarea 3.3. Optimización del desempeño computacional para BEM
+%%   \end{itemize}
+%%   %
+%% % \paragraph*{Tarea 5. Flujo con objetos inmersos e interacción fluido-estructura}
+%% \item Tarea 4. Flujo con objetos inmersos e interacción fluido-estructura: 
+%%   \begin{itemize}[noitemsep]
+%%   \item Tarea 4.1. Acoplamiento en una dirección fluido-sólido
+%%   \item Tarea 4.2. Acoplamiento en una dirección fluido-sólido con multifluidos
+%%   \item Tarea 4.3. Acoplamiento en dos direcciones 
+%%   \end{itemize}
+%%   %
+%% \end{itemize}
+
+\subsection{Presentación gráfica del cronograma}
+{\centering
+\begin{tabular}{|p{2cm}|c|c|c|c|c|c|c|c|c|c|c|c|}
+  \cline{2-13}
+  \multicolumn{1}{c}{} & \multicolumn{12}{|c|}{Meses}\\
+  \hline
+  Tarea & 1-3 & 4-6 & 7-9 & 10-12 & 13-15 & 16-18 & 19-21 & 22-24 & 25-27 & 28-30 & 31-33 & 34-36\\
+  \hline
+  \hline
+  {1.1}  & \b & \b & \b & \b &   &  &  &   &   &  &  & \\ 
+  \hline
+  {1.2}  &  &  & \b & \b & \b  & \b &  &    &   &  &  &  \\
+  \hline
+  {1.3 }  &  &  &  &  & \b & \b &  &   &   &  &  & \\
+  \hline
+  {1.4 }  & \b &\b  &\b  &\b  &  &   &  &   &   &  &  & \\
+  \hline
+  {1.5}  &  &  &  &  &  &  &  &   &   & \b & \b &\b \\
+  \hline
+  {1.6}  &  &  &  &  &  & \b & \b & \b  &   &  &  & \\
+  \hline
+  {2.1}  &  &  &  & \b & \b &\b   &  &   &   &  &  & \\
+  \hline
+  { 2.2 }  &  &  &  &  &  & \b & \b & \b    &  \b & \b &  & \\
+  \hline
+  { 2.3 }  &  &  &  &  &  &   & \b &\b   & \b  &  &  & \\
+  \hline
+  { 3.1.} & \b & \b & \b & \b &    &    & \b & \b & \b & \b &   &     \\
+  \hline
+  { 3.2.} &    &    &    & \b & \b & \b &    &    &    & \b & \b & \b \\
+  \hline
+  { 3.3 } & \b &    & \b &    & \b &    & \b &    & \b &    & \b &    \\
+  \hline
+  { 4.1}  & &  &  & \b & \b & &  &   &   &  &  & \\
+  \hline
+  { 4.2}  &  &  &  &  &  &   & \b &  \b & \b  &  &  & \\
+  \hline
+  { 4.3}  &  &  &  &  &  &   & &   &  \b  & \b  & \b  & \b \\
+  \hline
+\end{tabular}}
+
+
+\setstretch{0.5}
+
+\bibliographystyle{plain}
+
+\bibliography{PICT2021}
+
+
+\end{document}
+
+
+
+
+
+
+
+
