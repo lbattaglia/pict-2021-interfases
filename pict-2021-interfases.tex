@@ -119,6 +119,8 @@ programas desarrollados se ejecutarán en plataformas de cálculo
 paralelo con alto desempeño computacional, principalmente en aquellas
 disponibles en el lugar de trabajo de los investigadores del proyecto.
 
+\newpage
+
 \section{OBJETIVOS GENERALES} 
 
 %\begin{bibunit}[unsrt]
@@ -149,6 +151,7 @@ trabajo.
   incorporar, mayor precisión o detalle, para diferenciarlo del
   PICT2018.  }
 
+\newpage
 
 \section{OBJETIVOS ESPECÍFICOS E HIPÓTESIS DE TRABAJO} 
 \iftrue
@@ -156,36 +159,37 @@ trabajo.
 Identificar los Objetivos específicos relacionados con el problema que se abordará. Describir la hipótesis de trabajo y como se abordará el problema en cuestión a través de la experimentación y estudio.}
 \fi
 
-Los objetivos específicos del proyecto están dados en función de los fenómenos a resolver, brindando para cada uno el marco metodológico previsto.
+Los objetivos específicos del proyecto están dados en función de los fenómenos a resolver. 
+%, brindando para cada uno el marco metodológico previsto.
 
 
 
 \textcolor{red}{Tomado de PIP 2021 derecho. Quizás haya que refrasear y meter hipótesis/abordaje. Tomo también la gente a trabajar, comentada dentro de cada subsection }
 
-\subsection{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado}\label{ss:oe21}
+\paragraph{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado.}\label{ss:oe21}
 %Gabriel, Josy, Nico, Rodrigo, Pablo
 Se propone desarrollar técnicas y estrategias numéricas para la simulación de flujos capilares en medios porosos y del transporte de solutos en medios saturados y no-saturados a través de dichos flujos. Se considerarán dos enfoques: modelos de imbibición basados en la ecuación de Richards, y técnicas de simulación multiescala.
 
-\subsection{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+\paragraph{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
 %David, Pablo y Jorge
 Se propone desarrollar prototipos numéricos de generadores de microgotas y microcápsulas a través del estudio y la implementación numérica de los diferentes fenómenos que involucran la ruptura de interfases líquido-líquido, como la coalescencia y división de gotas. Se proponen tres estrategias diferentes que 
 exploran diferentes complejidades computacionales: modelos semi-empíricos, modelos completos \textit{Volume of Fluid.} (VOF) y modelos híbridos VOF--dos fluidos acoplados a estrategias de inteligencia artificial.
 
-\subsection{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
+\paragraph{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
 %Octavio, Camilo, Pablo
 Se propone el desarrollo de estrategias numéricas para el estudio del comportamiento de reactores catalíticos estructurados tipo monolíticos. Estas estrategias deben contemplar la naturaleza intrincada del flujo de fluidos a través de matrices de porosidad microestructurada (contemplada en el objetivo específico~\ref{ss:oe21}) y los procesos complejos que involucran varias etapas fisicoquímicas, como la difusión, la adsorción y la activación de las especies químicas involucradas, mediada por la presencia de superficies catalíticas y otras condiciones que determinan el desarrollo de las reacciones. 
 
-\subsection{Interfases líquido--gas no confinadas: superficie libre}
+\paragraph{Interfases líquido--gas no confinadas: superficie libre}
 %Gustavo, Laura
 Se generarán estrategias para resolver casos con superficie libre empleando el método de volúmenes finitos combinado con metodologías específicas para la representación de interfases en tres dimensiones espaciales, con el propósito de resolver el flujo en cursos de agua con generación y simulación de olas en torno a estructuras total o parcialmente inmersas, así como también la agitación en dominios cerrados. 
 
-\subsection{Interfases líquido--solido: interacción fluido estructura}
+\paragraph{Interfases líquido--solido: interacción fluido-estructura}
+%Mario, Laura - ya refraseado 
+Se prevén desarrollos en volúmenes finitos con cuerpos embebidos incorporados mediante un término de penalidad en las ecuaciones de Navier-Stokes activado en la región ocupada por el sólido con el fin de resolver casos de interacción fluido-estructura, asumiendo cuerpos inmersos rígidos en flujo no estacionario, incompresible y viscoso, aplicable a cuerpos con movimientos impuestos -esto es, de trayectoria predefinida- o no restringidos, como en la sedimentación de partículas.  
 %Gustavo, Jorge, Sofía?
-BEM para interacción fluido-MEMs?
+\textcolor{red}{BEM para interacción fluido-MEMs?}
 
-
-%Mario, Laura 
-Se desarrollarán métodos de resolución de problemas de interacción fluido-estructura, en los cuales los cuerpos inmersos, rígidos, interactúan con un flujo no estacionario, viscoso e incompresible, como ser en sedimentación de partículas o el flujo en torno a cuerpos fijos o con desplazamientos impuestos, en distintas escalas de resolución. 
+\newpage
 
 \section{RELEVANCIA DEL PROBLEMA} 
 \iftrue
@@ -302,7 +306,7 @@ en la micro- y nanoescala,  %donde los efectos de tensión superficial son domin
 
 %% Finalmente, y en la consideración de objetos flotantes o sumergidos en flujo a dos fases o con superficie libre, es posible representar, por ejemplo, las intefases mediante VOF y el movimiento de los cuerpos con {\it discrete element method} (DEM)~\cite{jing2016extended}, o bien técnicas {\it smoothed-particle hydrodynamics} (SPH) con DEM \cite{xu2019analysis}.
 
-
+\newpage
 
 \section{RESULTADOS PRELIMINARES Y APORTES DEL GRUPO AL ESTUDIO DEL PROBLEMA EN CUESTIÓN}
 \label{sec:4resulprelim}
@@ -381,6 +385,8 @@ Describir con suficiente detalle los resultados ya obtenidos por el grupo, sean 
 %% Una vez depurado el método embebido con el cual es posible determinar de manera eficiente las fuerzas que se producen en un sólido embebido estático~\cite{ZamoraENIEF19}, desarrollado como complemento a las rutinas estándar de Code$\_$Saturne~\cite{Saturne2020}, se ha procedido a la determinación de fuerzas sobre cuerpos en movimiento, ya sea en desplazamientos o rotaciones constantes, o sometidos a movimientos armónicos, como en~\cite{Costarelli2016}. La correcta determinación de las fuerzas sobre los cuerpos en movimiento, afectadas por las aceleraciones a las que éste se ve sometido, así como también por las fuerzas debidas a la inercia de la masa del cuerpo embebido, es un requerimiento de base para resolver las ecuaciones de movimiento de cuerpos rígidos con desplazamientos que dependen únicamente de su interacción con el fluido. 
 
 
+\newpage
+
 \section{CONSTRUCCION DE LA HIPOTESIS y JUSTIFICACION GENERAL DE LA
 METODOLOGIA DE TRABAJO} 
 
@@ -427,7 +433,7 @@ bajo licencias de libre distribución será ejecutado en las facilidades de cóm
 
 
 
-
+\newpage
 
 \section{TIPO DE DISEÑO DE INVESTIGACION Y MÉTODOS}
 \iftrue
@@ -598,6 +604,8 @@ El estudio de la dinámica del cuerpo rígido viene dado mediante la ecuación d
 Las metodología propuesta deberá ser evaluada en cuanto a convergencia, así como también se estudiará su escalabilidad que, se espera, muestre un buen desempeño debido a las características de regularidad de malla y uso de mecanismos de identificación de la posición de los cuerpos. La validación se realizará mediante la solución de benchmarks tales como los de sedimentación de partículas esféricas, o resultados experimentales disponibles. 
 %
 Las aplicaciones previstas se realizarán en la última etapa de trabajo, y consistirá en estudiar modelos generadores de energía undimotriz en conjunto con la Universidad de Santiago de Chile, así como también se aplicará al cálculo de fuerzas dinámicas sobre fustes de generadores eólicos near-shore, objeto de estudio en la sección de superficie libre. 
+
+\newpage
 
 \section{CRONOGRAMA DE TRABAJO}
 \iftrue
