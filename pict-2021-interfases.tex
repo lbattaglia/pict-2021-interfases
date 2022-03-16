@@ -45,6 +45,7 @@
   \renewcommand\baselinestretch {1.2}  % interline
 % ----------------------------------------------------------------
 % definiciones del usuario
+\newcommand{\of}{OpenFOAM\textsuperscript\textregistered}
 \newcommand{\ltitle}[1]{{\normalsize {\bf #1 }}}
 \newcommand{\stitle}[1]{\begin{center} \normalsize \bf #1 \end{center}}
 \catcode`\!=\active
@@ -66,7 +67,7 @@
 %% PIP 2021 Dinámica de fluidos computacional para flujo y transporte multifásico en plataformas de supercómputo
 %% PICT 2018 Dinámica de fluidos computacional con aplicaciones en interfases móviles a diferentes escalas
 %% PID UTN 2019 Prototipos numéricos de alto desempeño computacional para flujo y transporte multifásico enaplicaciones ingenieriles
-\author{L. Battaglia, J. D'El\'{\i}a, L. Garelli, P.A. Kler, G.A. R\'{\i}os Rodr\'{\i}guez y M.A. Storti.}
+\author{L. Battaglia, J. D'El\'{\i}a, L. Garelli, P.A. Kler (IR), G.A. R\'{\i}os Rodr\'{\i}guez y M.A. Storti.}
 \date{}
 % --------1--------------------------------------------------------
 \begin{document}
@@ -133,42 +134,45 @@ Desde el punto de vista de las aplicaciones, este proyecto busca desarrollar de 
 \newpage
 
 \section{OBJETIVOS ESPECÍFICOS E HIPÓTESIS DE TRABAJO} 
-\iftrue
+%\iftrue
+\if 0
 {\it (máx 1 pág)
 Identificar los Objetivos específicos relacionados con el problema que se abordará. Describir la hipótesis de trabajo y como se abordará el problema en cuestión a través de la experimentación y estudio.}
 \fi
 
-Los objetivos específicos del proyecto están dados en función de los fenómenos a resolver. 
+{Los objetivos específicos están orientados a desarrollar métodos numéricos} {para resolver problemas específicos de mecánica de fluidos  computacional donde las interfases juegan un rol preponderante en la estimación de parámetros y fenómenos de interés tecnológico. Además del desarrollo de los métodos, será crucial su implementación utilizando códigos y lenguajes específicos, de uso corriente por parte del grupo de trabajo, para su ejecución en infraestructuras de  computación de alto desempeño}. 
+Los fluidos involucrados en los dominios de cálculo serán en general considerados incompresibles, invíscidos o viscosos, {mientras que los elementos sólidos serán considerados rígidos o elásticos con baja deformación}. 
+
+%Los objetivos específicos del proyecto están dados en función de los fenómenos a resolver. 
 %, brindando para cada uno el marco metodológico previsto.
 
 
 
-\textcolor{red}{Tomado de PIP 2021 derecho. Quizás haya que refrasear y meter hipótesis/abordaje. Tomo también la gente a trabajar, comentada dentro de cada subsection }
+%\textcolor{red}{Tomado de PIP 2021 derecho. Quizás haya que refrasear y meter hipótesis/abordaje. Tomo también la gente a trabajar, comentada dentro de cada subsection }
 
-\paragraph{Interfases líquido--gas no confinadas: superficie libre.}
+\paragraph{2.1 Interfases líquido--gas no confinadas: superficie libre.}
 %Gustavo, Laura - ya refraseado
 Resolver problemas de flujo a superficie libre, sea en recintos acotados -como los casos de agitación o {\it sloshing}- o en dominios con fronteras abiertas, tales que constituyen desafíos tanto en el conocimiento de la cinemática de la interfase como en los efectos dinámicos del fluido sobre los contornos o elementos interpuestos al flujo, como ser estructuras fijas o móviles sometidas a oleaje. La representación de la superficie libre en tres dimensiones espaciales será abordada mediante estrategias de captura de interfase desarrolladas sobre solvers basados principalmente en volúmenes finitos altamente escalables para flujo viscoso e incompresible.
 
-\paragraph{Interfases líquido--solido: interacción fluido-estructura.}
+\paragraph{2.2 Interfases líquido--solido: interacción fluido-estructura.}
 %Mario, Laura - ya refraseado 
 Desarrollar métodos en volúmenes finitos con cuerpos embebidos incorporados mediante un término de penalidad en las ecuaciones de Navier-Stokes activado en la región ocupada por el sólido con el fin de resolver casos de interacción fluido-estructura, asumiendo cuerpos inmersos rígidos en flujo no estacionario, incompresible y viscoso, aplicable a cuerpos con movimientos impuestos -esto es, de trayectoria predefinida- o no restringidos, como en la sedimentación de partículas.  
 %Gustavo, Jorge, Sofía?
 \textcolor{red}{BEM para interacción fluido-MEMs?}
 
-\paragraph{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado.}\label{ss:oe21}
+\paragraph{ 2.3 Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado.}\label{ss:oe21}
 %Gabriel, Josy, Nico, Rodrigo, Pablo
-Se propone desarrollar técnicas y estrategias numéricas para la simulación de flujos capilares en medios porosos y del transporte de solutos en medios saturados y no-saturados a través de dichos flujos. Se considerarán dos enfoques: modelos de imbibición basados en la ecuación de Richards, y técnicas de simulación multiescala.
+Desarrollar técnicas y estrategias numéricas para la simulación de flujos capilares e hidrostáticos en medios porosos acoplando el transporte de solutos. El transporte de diferentes tipos de sustancias, consideradas como concentraciones escalares, se resolverá tanto en regímenes saturados como no-saturados para ambos tipos de flujo. Se considerarán diversos enfoques, algunos basados en simplificaciones tipo Washburn, otros basados en la ecuación de Richards con diferentes modelos capilares, y técnicas multiescala basadas en homogeneización. 
 
 
-\paragraph{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
+\paragraph{2.4 Interfases líquido--sólido confinadas: flujo reactivo en  microestructuras}
 %Joselynne, Seba, Camilo, Pablo
-Se propone el desarrollo de estrategias numéricas para el estudio del comportamiento de reactores catalíticos estructurados tipo monolíticos. Estas estrategias deben contemplar la naturaleza intrincada del flujo de fluidos a través de matrices de porosidad microestructurada (contemplada en el objetivo específico~\ref{ss:oe21}) y los procesos complejos que involucran varias etapas fisicoquímicas, como la difusión, la adsorción y la activación de las especies químicas involucradas, mediada por la presencia de superficies catalíticas y otras condiciones que determinan el desarrollo de las reacciones. 
+Desarrollar de estrategias numéricas para la implementación de modelos reactivos en el estudio del comportamiento de reactores catalíticos microestructurados de interés medioambiental. Estas estrategias deben contemplar la naturaleza intrincada del flujo de fluidos a través de matrices de porosidad microestructurada (mencionada en el objetivo anterior) y las etapas fisicoquímicas que determinan los mecanismos reactivos como la difusión, la adsorción y la activación.
 
 
-\paragraph{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+\paragraph{2.5 Interfases líquido--líquido confinadas: flujo bifásico inmiscible en microgotas}
 %David, Pablo y Jorge
-Se propone desarrollar prototipos numéricos de generadores de microgotas y microcápsulas a través del estudio y la implementación numérica de los diferentes fenómenos que involucran la ruptura de interfases líquido-líquido, como la coalescencia y división de gotas. Se proponen tres estrategias diferentes que 
-exploran diferentes complejidades computacionales: modelos semi-empíricos, modelos completos \textit{Volume of Fluid.} (VOF) y modelos híbridos VOF--dos fluidos acoplados a estrategias de inteligencia artificial.
+Obtener implementaciones numéricas consistentes y eficientes para modelar los diferentes fenómenos que involucran la ruptura de interfases líquido-líquido, como la coalescencia y división de gotas. Se proponen tres estrategias diferentes con diferentes complejidades computacionales: modelos semi-empíricos, modelos completos \textit{Volume of Fluid.} (VOF) y modelos híbridos VOF--dos fluidos combinados con aprendizaje maquinal.
 
 \newpage
 
@@ -179,8 +183,9 @@ Desarrollar la importancia e impacto a nivel local, general y para la especialid
 Describir antecedentes, avances y el estado del arte – búsqueda bibliográfica actualizada.}
 \fi
 \subsection{Relevancia e impacto en el medio}
+Los métodos computacionales contemporáneos para la resolución de problemas de ingeniería constituye una ventaja operativa para todos los actores sociales intervinientes en desarrollos tecnológicos novedosos. Las simulaciones numéricas permiten disminuir costos de diseño, aumentar la factibilidad de los desarrollos, y disminuir sensiblemente los tiempos de llegada al mercado y/o al campo de uso de los productos desarrollados. Los prototipos numéricos permiten acotar la cantidad de situaciones a modelar físicamente, y brindan, en todos los casos, información instantánea y puntual de todas las magnitudes físicas involucradas, ya sean medibles o no en los prototipos reales. En cada una de las aplicaciones propuestas en este proyecto, se pueden identificar impactos relevantes como:
 
-\textcolor{red}{Itemizo como ayuda a la redacción. Luego podemos agrupar por párrafo. }
+%\textcolor{red}{Itemizo como ayuda a la redacción. Luego podemos agrupar por párrafo. }
 
 \begin{itemize}
 
@@ -194,23 +199,97 @@ Describir antecedentes, avances y el estado del arte – búsqueda bibliográfic
 
   
 \item{Interfases líquido--gas confinadas: flujo en medios porosos en regimen saturado e insaturado}
-en la micro- y nanoescala,  %donde los efectos de tensión superficial son dominantes y muy complejos de medir y reproducir experimentalmente~\cite{Berli16,Schaumburg18}, pero que determinan la eficiencia y factibilidad de diferentes métodos y dispositivos. Se destaca el hecho social de que los dispositivos basados en papel han demostrado un gran potencial para el desarrollo de diversas aplicaciones analíticas en salud, control ambiental, fitosanitario y bromatológico~\cite{Posthuma09,Yager06}; 
+rodo drenante y coso
+
+Paralelamente, los dispositivos basados en papel han demostrado un gran potencial para el desarrollo de diversas aplicaciones analíticas en salud, control ambiental, fitosanitario y bromatológico~\cite{Posthuma09,Yager06}; 
 
 
 \item{Interfases líquido--sólido confinadas: flujo reactivo en reactores microestructurados}
 
-\item{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+descontaminación y otros procesos catalíticos
 
+
+\item{Interfases líquido--líquido confinadas: flujo bifásico inmiscible en generadores de microgotas}
+Se destacan notablemente en el campo de las aplicaciones contemporáneas de la microfluídica implementaciones de  microreactores~\cite{sui2020continuous}, microcápsulas multicapa para liberación controlada de drogas~\cite{Marengo2019generation}, microcámaras para cultivo de microorganismos~\cite{jian2020microbial}, entre otras otras~\cite{wang2019microdroplets}. 
+En este contexto, para el desarrollo de estos dispositivos adquiere notoria importancia el empleo de prototipos numéricos que contribuyen a acelerar los procesos de diseño, ya que evitan iteraciones empíricas sobre prototipos reales~\cite{schaumburg_numerical}, con altos costos de mano de obra calificada, materiales, manufactura, e incluso ambientales. Sin embargo, los costos de las técnicas del estado del arte, en cuanto a la simulación numérica de flujo bifásico incompresible, son todavía incompatibles con los tiempos requeridos por la cadena de desarrollo de estos dispositivos.
+
+%figuras PICT 2018
+\if 0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[b]
+\centerline{
+  \includegraphics[width=3.6truecm]{./FIG/chueco-120h-bh-ta-co}
+  \hspace{12pt}
+  \includegraphics[width=3.6truecm]{./FIG/sculpt-120h-bh-ta-co}
+  \hspace{12pt}
+  \includegraphics[width=3.6truecm]{./FIG/squakn-4-3-0-bh-ta-co}
+}% end centerline
+\caption{\footnotesize 
+  Flujo reptante por BEM/GBEM \cite{rf:jdelia-gbem3, rf:jdelia-gbem2} y 
+  HBEM \cite{rf:ssarraf-hbem} alrededor de 
+  geometr\'{\i}as intrincadas: 
+  {\it hollow cube}     (izq.),
+  {\it sculpted sphere} (cen.) y
+  {\it square knots}  (der.), % \cite{rf:edelsbrunner1},
+  generadas con \htmladdnormallink{NETGEN}%
+  {http://sourceforge.net/projects/netgen-mesher},
+  tracci\'on $\tau_1$ bajo flujo paralelo.} 
+\label{fg-intrincate1}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[b]
+\centerline{
+\includegraphics[width=5.2truecm]{./FIG/ra75-17686-dg-ta-cw-4}
+\hspace{10pt}
+\includegraphics[width=6.2truecm]{./FIG/waves40}
+}% end centerline
+\caption{\footnotesize 
+  GBEM: tracci\'on $t_x$ sobre una 
+  micro-viga de polisilicio, perforada, doblemente empotrada, dimensiones $300 \times 100 \times {10}{\mu m}$, con $5 \times 15$ perforaciones de radio $r =  {4} {\mu m}$, y huelgo entre micro-viga y sustrato de $h = {4} {\mu m}$ (izq.)~\cite{rf:jdelia-gbem3}.
+  %
+  BEM: patr\'on de olas 3D detr\'as de un ferry 15 esloras 
+  aguas abajo a una velocidad de 40 nudos (der.). 
+ }
+\label{fg-waves40}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[tb]
+\centerline{
+\includegraphics[width=4.9truecm]{./FIG/boya1}
+\hspace{10pt}
+\includegraphics[width=5truecm]{./FIG/wec_usach_1.png}
+}% end centerline
+\caption{\footnotesize 
+  Esquema de instalación de un dispositivo para generación de energía mareomotriz (izq.)~\cite{Falnes2007}.
+  %
+Prototipo para generación de energía undimotriz, gentileza USACH (der.). 
+ }
+\label{fg-boyas}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\fi
+
+Las herramientas computacionales de código abierto involucradas en el proyecto resultarán aptas para su empleo en aplicaciones ingenieriles diversas, como las mencionadas, tanto por parte de actores privados como del Estado.  	
+Estos prototipos numéricos permiten disminuir sensiblemente los costos por parte de emprendedores y PyMEs del ámbito regional y nacional durante las etapas de I+D y validación, como así también acelerar los procesos de introducción en el mercado de sus productos.
+Asimismo, permitirán ampliar la capacidad de resolución de problemas en ámbitos académicos, tanto de investigación como de enseñanza en carreras de grado y de posgrado. La complejidad de las simulaciones que abarcan numerosos campos y escalas (multifísica) resultan sumamente demandantes en lo que refiere a la magnitud de los recursos computacionales necesarios para resolver con suficiente precisión cierto grupo de casos. Por este motivo, se trabajará a su vez en la resolución mediante herramientas de computación de alto desempeño en los clusters disponibles, tanto en la Unidad Ejecutora (UE) como en el Sistema Nacional de Computación de Alto Desempeño (http://www.supercalculo.mincyt.gob.ar). 
   
 \end{itemize}
 
 \subsection{Relevancia en la especialidad}
 
-\textcolor{red}{Lo comentado está tomado del PIP2021 - Kler. Hay que resumir y seleccionar. Faltan cosas de BEM. }
+\textcolor{red}{Lo comentado está tomado del PIP2021 - Kler. Lo otro readaptado del PICT2018. Hay que resumir y seleccionar. Faltan cosas de BEM. }
 
 %% \subsection{Introducción general}
 %% %2paginas
-%% El modelado de interfases entre fluidos inmiscibles es un campo de investigación vigente y activo dentro de la disciplina de la mecánica computacional presentando desafíos en cuanto al modelado de los fenómenos, la implementación computacional y el comportamiento matemático de los modelos generados. Estos desafíos incluyen el desplazamiento de las interfases, la metodología empleada para identificar la posición de la interfase, el tratamiento numérico de la transición de las propiedades de los fluidos de un fluido al otro y, en algunos casos, la representación de comportamientos diferentes en cada fase. Las ecuaciones de Navier-Stokes~\cite{rf:donea-huerta} para el caso incompresible y viscoso proveen el marco teórico para el cual se desarrollan los métodos numéricos que son de interés a este proyecto. Se agregan además todas las estrategias necesarias para que los modelos numéricos generados puedan resolverse en plataformas de cálculo distribuido de alto rendimiento (HPC).
+El modelado de interfases entre fluidos inmiscibles es un campo de investigación vigente y activo dentro de la disciplina de la mecánica computacional presentando desafíos en cuanto al modelado de los fenómenos, el comportamiento matemático de los modelos diferenciales propuestos, y el desempeño de las implementaciones computacionales de dichos modelos para las diferentes estructuras de cálculo disponible. Estos desafíos incluyen el desplazamiento de las interfases, la metodología empleada para identificar la posición de la interfase, el tratamiento numérico de la transición de las propiedades de los fluidos de un fluido al otro, el comportamiento elástico de las paredes sólidas, y en algunos casos, la representación de comportamientos reológicos diferentes en cada fase.
+
+
+
+%Las ecuaciones de Navier-Stokes~\cite{rf:donea-huerta} para el caso incompresible y viscoso proveen el marco teórico para el cual se desarrollan los métodos numéricos que son de interés a este proyecto. Se agregan además todas las estrategias necesarias para que los modelos numéricos generados puedan resolverse en plataformas de cálculo distribuido de alto rendimiento (HPC).
 
 
 %% El flujo a dos fases mediante simulación numérica ha sido abordado por métodos numéricos diversos~\cite{Cruchaga2016}, como por ejemplo diferencias finitas, volúmenes finitos, y elementos finitos, así como también métodos de partículas, en sus diversas variantes. Otro aspecto a destacar de la temática es la variedad de escalas geométricas que se incluyen en el estudio de interfases fluido-fluido~\cite{alkayyali2019microfluidic}. Estas escalas abarcan desde los cientos de metros, como en el caso del movimiento de olas, hasta algunas micras, como es el caso de las interfases capilares a nivel de poro en el papel~\cite{schaumburg2018numerical}. Otra circunstancia a tener en cuenta en el desarrollo de las técnicas numéricas son los efectos de la tensión superficial, en donde el cálculo preciso de las curvaturas juega un rol fundamental, sobre todo en interfases líquido--líquido~\cite{mora2019numerical}. Dada la variedad de temáticas y posibles enfoques, a continuación, se trata de compilar el estado del arte organizado de acuerdo a los diferentes tipos de aplicaciones contempladas en el proyecto.
@@ -286,6 +365,15 @@ en la micro- y nanoescala,  %donde los efectos de tensión superficial son domin
 
 %% En cuanto a los procedimientos informáticos para el acople de las escalas, existen algunas herramientas con modelos de transporte reactivos de escala continua, como ParCrunchFlow~\cite{beisman2015parcrunchflow} y PFLOTRAN~\cite{Pflotran}, con implementaciones paralelas recientes. Sin embargo, estos dos paquetes muestran una muy limitada colección de modelos reactivos y hacen compleja la implementación de nuevos modelos. Existen otros paquetes que ofrecen una mayor variedad de modelos aunque su costo computacional es restrictivo debido a la falta de paralelización~\cite{steefel2015reactive,parkhurst2015phreeqcrm}.  
 
+%esto es del PICT2018 adaptado, o casi
+El desarrollo de algoritmos para flujo con interfases móviles, particularmente con superficies libres, resulta indispensable para poder analizar aplicaciones tecnológicas de interés como el movimiento de objetos inmersos total o parcialmente, ya sea aislados~\cite{Ransley2017} o agrupados~\cite{Erselcan2017}, flujos en estructuras civiles, en torno a turbinas eólicas costeras u \emph{offshore}~\cite{Suja2018}. Actualmente, se encuentra en estudio la normativa empleada 
+para la estimación de acciones en estructuras \emph{offshore}~\cite{Suja2018}. En estos aspectos, la simulación numérica permite establecer magnitudes de impacto y otras variantes de cargas dinámicas debidas al oleaje, para lo cual se han desarrollado algunas herramientas para estudiar olas en régimen no lineal y su interacción con estructuras marinas~\cite{Chen2014numerical}. 
+
+Poder contar con modelos numéricos eficientes y confiables para el flujo capilar e hidrostático en medios porosos representa un aporte disciplinar insoslayable brindando  soporte teórico sólido al desarrollo de tecnologías de drenaje urbano, y monitoreo y tratamiento de aguas urbanas. Si bien el problema del flujo en medios porosos es un fenómeno ampliamente estudiado (principalmente desde la geología), sus particularidades para aplicaciones en hormigones drenantes aún están en proceso de estudio. El transporte y reacción de especies (bio) químicas cuenta con escaso soporte para cálculos numéricos de alto desempeño y los aportes del presente proyecto contribuirán a reducir esa brecha en el conocimiento aportando además conocimiento en otras áreas relacionadas al transporte en medios porosos como ser la cromatografía líquida o el microfiltrado~\cite{Cate14}.
+
+
+Los desarrollos del grupo responsable en el Centro de Investigación de Métodos Computacionales (CIMEC, http://www.cimec.santafe-conicet.gov.ar) en las áreas de la mecánica y la multifísica computacional son reconocidos en ámbitos científicos y académicos, como puede apreciarse en la cantidad de publicaciones en revistas de alto impacto y la participación en eventos nacionales e internacionales de la especialidad, lo cual conlleva el habitual reconocimiento de los aspectos innovativos y originales de las propuestas. 
+Además en CIMEC se realizan habitualmente asesoramientos técnicos de alto nivel a empresas de diversos rubros en las áreas de simulación numérica de problemas cuya dificultad requiere una resolución mediante computación de alto desempeño y modelos numéricos avanzados.
 
 
 \newpage
