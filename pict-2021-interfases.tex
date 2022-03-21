@@ -415,6 +415,9 @@ Más recientemente, y con el objetivo de migrar a códigos de mayor eficiencia c
 
 \textcolor{red}{Acá explicar lo de olas y demás, con Gustavo. } 
 
+%% %% ------------ grios ----------- %%
+Por otro lado, también se trabajó utilizando una metodología basada en Volume of Fluid (VOF) y volúmenes finitos sobre la resolución del flujo a dos fases en problemas de interacción del oleaje marítimo con el pilar de una aerogenerador offshore instalado en aguas de profundidad relativa media. Dicha metodología se encuentra implementada a través de distintas herramientas en el código de cálculo OpenFoam~\cite{openfoam}, y la misma se ha empleado para determinar la posición de la superficie libre y la fuerza de arrastre generada por el oleaje sobre el pilar. Entre otras variables, resulta de particular interés determinar con precisión el {\it run-up} de la superficie libre debido a la presencia del pilar así como también el análisis en el tiempo y en el dominio de las frecuencias de la fuerza horizontal resultante. Luego las tracciones generadas por el fluido son proyectadas con un algoritmo de mallas no coincidentes~\cite{schauer_coupled_2019} desarrollado en el CIMEC, sobre el pilar del aerogenerador, dentro de un esquema de solución particionado para realizar finalmente el análisis dinámico de la estructura y su interacción con el suelo y otras cargas dinámicas como las aerodinámicas u ondas sísmicas~\cite{schauer_seismic_2019,schauer_coupled_2019,rios_rodriguez_computation_2021}. La validación de los resultados obtenidos se llevó a cabo comparando con soluciones semi-analíticas y numéricas presentadas por otros autores~\cite{dean_water_1991,higuera_aplicacion_2015,chen_modelling_2015}, así como también realizando simulaciones numéricas con el código de cálculo Reef3D basado en level set y diferencias finitas, tanto para la posición de la superficie libre como para la estimación de la fuerza sobre el pilar~\cite{rios_rodriguez_computation_2021-1}. El análisis dinámico de la estructura del aerogenerador y su interacción con el suelo ha sido realizado por investigadores de la Universidad Tecnológica de Braunschweig, Alemania, con quienes se viene trabajando de forma colaborativa desde el a\~no 2014.
+%% %% ------------ end grios ----------- %%
 
 
 \subsection{Interacción fluido-estructura}
@@ -537,6 +540,17 @@ El estudio computacional de dominios con fronteras abiertas, tal como cierta sec
 En este sentido, se estudiarán modelos de producción de ondas con el propósito de reproducir el oleaje que se registra en condiciones naturales~\cite{Li2019,Romanowski2019,Stagonas2018}. A tal fin, las técnicas a emplear deberán considerar una regla de desplazamiento de ingreso para la superficie libre, y una regla para definir las velocidades en el mismo contorno. 
 En lo referido a reflexiones espurias de olas en contornos artificiales, producidas tanto en secciones de ingreso como de salida en régimen subcrítico, es preciso dotar al NWT de regiones diseñadas para evitar tales reflejos. Estas regiones pueden contar con propiedades absorbentes en general~\cite{Paz201152}, o definirse con condiciones de contorno variables~\cite{rf:storti-dynbc}. Técnicas similares~\cite{Chen2014numerical,Deng2019} serán tomadas como referencia para la validación y/o contraste. 
 Empleando estas técnicas, la caracterización de empujes hidrodinámicos sobre objetos sumergidos total o parcialmente, permitirán calcular acciones dinámicas en los objetos sumergidos~\cite{Suja2018} sin afectarlas con reflexiones espurias. 
+
+%% ------------ grios ----------- %%
+%% Párrafo sobre rotura de olas
+También resulta fundamental contar con modelos numéricos que permitan resolver aquellos casos en los cuales las olas rompen sobre estructuras parcialmente sumergidas, comoocurre sobre los pilares de estructuras offshore. En el análisis dinámico de dichas estructuras resulta fundamental considerar el desarrollo temporal de la fuerza (su historia) además de su intensidad. Debido al breve lapso de tiempo en el que se desarrolla el fenómeno de rotura, el análisis detallado resulta complejo, si bien se han desarrollado diversos modelos analíticos~\cite{wienke_breaking_2005}, estudios experimentales~\cite{irschik_belastung_2012,tai_experimental_2019} y también análisis numéricos~\cite{qu_evaluation_2021}.
+%%
+Desde el punto de vista numérico resulta fundamental considerar condiciones de borde específicas que permitan generar grupos o trenes de ondas enfocados (i.e. focused wave groups) ya que modificar la ubicación del foco con respecto de la estructura considerada permite analizar distintos tipos de impactos de la ola~\cite{hu_numerical_2016,hu_investigations_2017}. Por otro lado, el estudio de olas extremas y su correcta representación analítica y numérica también resultan fundamental en el proceso de dise\~no de estructuras offshore. En este sentido, se empleará la teoría NewWave~\cite{tromans_new_1991} la cual permite simular de forma determinística olas extremas~\cite{vyzikas_numerical_2018} tanto en aguas profundas como intermedias o de poca profundidad~\cite{whittaker_average_2016}.
+%%
+%%En los casos de olas que no rompen la ecuación de Morison resulta apropiada en la medida que las esctructuras presenten una determinada esbeltez en relación a la longitud de las olas. Sin embargo, en los casos de olas rompientes dicha ecuación no es suficiente ya que no considera la componente dinámica de la carga ({\it slamming} sino sólo la parte cuasi-estática~\cite{wienke_breaking_2005}.
+%%
+%% ------------ end grios ----------- %%
+
 
 Los métodos estudiados en esta sección Como parte de la metodología, se prevé establecer una comparación con las estrategias a proponer en la Sec.~\ref{sc:fsi} en cuanto a precisión y escalabilidad en entornos de HPC a fin de contar con elementos de decisión al momento de optar por una u otra herramienta de cálculo. 
 
@@ -789,7 +803,7 @@ Se listan los miembros del GR a cargo de cada paquete de tareas
 
 \bibliographystyle{plain}
 
-\bibliography{PICT2021}
+\bibliography{PICT2021,waves}
 
 
 \end{document}
